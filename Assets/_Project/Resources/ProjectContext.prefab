@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5540527384304102711}
   - component: {fileID: 1344333552072716078}
-  - component: {fileID: 2536742065055371954}
+  - component: {fileID: 4347880399598106500}
   m_Layer: 0
   m_Name: ProjectContext
   m_TagString: Untagged
@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers: []
   _monoInstallers:
-  - {fileID: 2536742065055371954}
+  - {fileID: 4347880399598106500}
   _installerPrefabs: []
   _parentNewObjectsUnderContext: 1
   _editorReflectionBakingCoverageMode: 0
@@ -62,7 +62,7 @@ MonoBehaviour:
       _missingHandlerDefaultResponse: 2
       _requireStrictUnsubscribe: 0
       _defaultAsyncTickPriority: 1
---- !u!114 &2536742065055371954
+--- !u!114 &4347880399598106500
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -71,7 +71,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3397272645645670338}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b81af1a2947d77a408ffbb90fdade043, type: 3}
+  m_Script: {fileID: 11500000, guid: c127a3616217417ba75dec4b96e95660, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _sceneLoaderServicePrefab: {fileID: 2140080599545235186, guid: 8b1d16969ef546d49b5285fe9f082cd3,
@@ -85,4 +85,12 @@ MonoBehaviour:
   _localizationServicePrefab: {fileID: 7228563311622869819, guid: 0cc04c897eee5124b93c5c4e6a2c98b7,
     type: 3}
   _controlServicePrefab: {fileID: 447765536060407566, guid: 40119e48525aa3c43854e26c457a94a9,
+    type: 3}
+  _debugServicePrefab: {fileID: 2397696544755187098, guid: c23f7ca1546aac341a1ef2d3d41269e2,
+    type: 3}
+  _audioServicePrefab: {fileID: 8263523840226339766, guid: efa6f52d7846c21478758442774c8759,
+    type: 3}
+  _statisticServicePrefab: {fileID: 8811600676344013440, guid: 1c11115449f105d42a5e78d2f24f184f,
+    type: 3}
+  _eventListenerServicePrefab: {fileID: 134155829961092429, guid: d1b8c620a402a80468395250f4495ed8,
     type: 3}
