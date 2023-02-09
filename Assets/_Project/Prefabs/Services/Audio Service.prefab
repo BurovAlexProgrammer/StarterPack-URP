@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6640724356589926896}
+  - component: {fileID: 8038940987799586734}
   - component: {fileID: 4789526535547427929}
-  - component: {fileID: 8263523840226339766}
   m_Layer: 0
   m_Name: Audio Service
   m_TagString: Untagged
@@ -33,6 +33,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8038940987799586734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7518854275403679784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd61fa1b968742aea65cc72e3094880b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioListener: {fileID: 0}
+  _musicAudioSource: {fileID: 4789526535547427929}
+  _soundEffectMixerGroup: {fileID: -4153131008125989416, guid: 00dba7a1824766144a3f92dfaeb450be,
+    type: 2}
+  _musicMixerGroup: {fileID: -6945114975033853926, guid: 00dba7a1824766144a3f92dfaeb450be,
+    type: 2}
+  _battlePlaylist:
+  - {fileID: 8300000, guid: 74082229ea3ab2a4bbe6ed5fa0e9555a, type: 3}
+  - {fileID: 8300000, guid: 037f8aa78ceba8a48b74cc543aaf65f2, type: 3}
+  _menuPlaylist:
+  - {fileID: 8300000, guid: 60409d17f851da74eb16eba3cecb8d36, type: 3}
 --- !u!82 &4789526535547427929
 AudioSource:
   m_ObjectHideFlags: 0
@@ -130,23 +153,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &8263523840226339766
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7518854275403679784}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7c7640376fa4624864b3c51d21341ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _audioListener: {fileID: 0}
-  _musicAudioSource: {fileID: 4789526535547427929}
-  _soundEffectMixerGroup: {fileID: -4153131008125989416, guid: b74dbd0d608738947bfcee26a1db52a9,
-    type: 2}
-  _musicMixerGroup: {fileID: -6945114975033853926, guid: b74dbd0d608738947bfcee26a1db52a9,
-    type: 2}
-  _battlePlaylist: []
-  _menuPlaylist: []

@@ -18,7 +18,7 @@ MonoBehaviour:
   m_GUID: 9d6c0d86b5511be40b0f292ec62a37cf
   m_SerializeEntries:
   - m_GUID: 7b0e00264f0d4df418a2dd0b4a887fb8
-    m_Address: Assets/_Project/Data/Locales
+    m_Address: Locales
     m_ReadOnly: 0
     m_SerializedLabels:
     - locale

@@ -1,7 +1,7 @@
 using _Project.Scripts.Main.Settings;
 using UnityEngine;
 using Zenject;
-using SettingsService = _Project.Scripts.Main.Services.SettingsService;
+using SettingsService = _Project.Scripts.Main.AppServices.SettingsService;
 
 namespace _Project.Scripts.Main.Menu
 {
@@ -13,6 +13,12 @@ namespace _Project.Scripts.Main.Menu
         public GameSettings GameSettings => _settings.GameSettings;
 
         public void Apply()
+        {
+            _settings.Save();
+            _settings.Apply();
+        }
+
+        public void Save()
         {
             _settings.Save();
             _settings.Apply();

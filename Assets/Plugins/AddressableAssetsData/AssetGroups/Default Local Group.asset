@@ -17,11 +17,11 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 8fc520876094cd04a84fb3f454654286
   m_SerializeEntries:
-  - m_GUID: 24a3165967bf8e54485b7e9eb4f212e3
-    m_Address: Assets/_Project/Data/Locales/LocalizationSettings.asset
+  - m_GUID: b04edce31713c7e489cbb1b4315f2c0a
+    m_Address: MainMenu
     m_ReadOnly: 0
     m_SerializedLabels:
-    - locale
+    - scene
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: d7f3558eef1d9324586ae64434963303, type: 2}
   m_SchemaSet:

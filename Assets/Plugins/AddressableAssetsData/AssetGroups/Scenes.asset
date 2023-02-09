@@ -17,13 +17,8 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 8ec889cc1c9618c47ae47ebc5d068524
   m_SerializeEntries:
-  - m_GUID: 39cd42e02b3fe1f4fba36afe2239eba2
-    m_Address: Test
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - scene
-  - m_GUID: b04edce31713c7e489cbb1b4315f2c0a
-    m_Address: MainMenu
+  - m_GUID: 9fc0d4010bbf28b4594072e72b8655ab
+    m_Address: MiniGameLevel
     m_ReadOnly: 0
     m_SerializedLabels:
     - scene

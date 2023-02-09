@@ -1,9 +1,8 @@
-using UnityEngine;
-using UnityEditor;
 using System.Linq;
-using _Project.Scripts.Extension.Attributes;
+using UnityEditor;
+using UnityEngine;
 
-namespace _Project.Scripts.Extension.LabeledArray.Editor
+namespace _Project.Scripts.Extension.Attributes.Editor
 {
     [CustomPropertyDrawer(typeof(LabeledArrayAttribute))]
     public class LabeledArrayDrawer : PropertyDrawer
@@ -19,7 +18,7 @@ namespace _Project.Scripts.Extension.LabeledArray.Editor
             try
             {
                 var path = property.propertyPath;
-                int pos = int.Parse(path.Split('[').LastOrDefault().TrimEnd(']'));
+                var pos = int.Parse(path.Split('[').LastOrDefault()!.TrimEnd(']'));
                 EditorGUI.PropertyField(rect, property,
                     new GUIContent(ObjectNames.NicifyVariableName(((LabeledArrayAttribute)attribute).names[pos])),
                     true);
