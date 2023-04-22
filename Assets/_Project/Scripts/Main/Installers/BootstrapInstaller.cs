@@ -1,5 +1,7 @@
 using System.IO;
 using _Project.Scripts.Main.AppServices;
+using _Project.Scripts.Main.Events;
+using _Project.Scripts.Main.Systems;
 using DG.Tweening;
 using UnityEngine;
 using Zenject;
@@ -38,6 +40,10 @@ namespace _Project.Scripts.Main.Installers
             {
                 Application.logMessageReceived += LogToFile;
             }
+
+            SystemsService.Bind<TestSystem>();
+            
+            new TestEvent().Fire();
         }
 
         private void InstallStatisticService()
