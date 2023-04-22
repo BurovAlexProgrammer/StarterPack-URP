@@ -2,6 +2,6 @@
 {
     public class TestEvent : BaseEvent
     {
-        
+        public string Name;
     }
 }

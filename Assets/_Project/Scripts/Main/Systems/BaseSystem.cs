@@ -6,15 +6,15 @@ namespace _Project.Scripts.Main.Systems
 {
     public abstract class BaseSystem : ISystem
     {
-        public Dictionary<Type, Action<IEvent>> _eventCallbacks = new Dictionary<Type, Action<IEvent>>();
+        public Dictionary<Type, Action<BaseEvent>> _eventCallbacks = new Dictionary<Type, Action<BaseEvent>>();
 
-        public Dictionary<Type, Action<IEvent>> EventCallbacks => _eventCallbacks;
+        public Dictionary<Type, Action<BaseEvent>> EventCallbacks => _eventCallbacks;
 
         public virtual void Init()
         {
         }
 
-        public void AddListener<T>(Action<IEvent> callback) where T : IEvent
+        public void AddListener<T>(Action<BaseEvent> callback) where T : BaseEvent
         {
             var type = typeof(T);
 

@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using _Project.Scripts.Main.AppServices;
 using _Project.Scripts.Main.Events;
@@ -41,9 +42,16 @@ namespace _Project.Scripts.Main.Installers
                 Application.logMessageReceived += LogToFile;
             }
 
+            
             SystemsService.Bind<TestSystem>();
             
-            new TestEvent().Fire();
+            new TestEvent(){Name = "Good"}.Fire();
+            new Test2Event().Fire();
+        }
+
+        private void OnApplicationQuit()
+        {
+            SystemsService.Dispose();
         }
 
         private void InstallStatisticService()

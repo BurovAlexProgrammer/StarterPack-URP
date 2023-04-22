@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using _Project.Scripts.Main.Events;
 using _Project.Scripts.Main.Systems;
 using UnityEngine;
@@ -23,7 +24,7 @@ namespace _Project.Scripts.Main.AppServices
             return newSystem;
         }
 
-        public static void FireEvent<T>(T firedEvent) where T : IEvent
+        public static void FireEvent<T>(T firedEvent) where T : BaseEvent
         {
             Debug.Log("Fired");
             
@@ -33,6 +34,16 @@ namespace _Project.Scripts.Main.AppServices
                 
                 system.EventCallbacks[firedEvent.GetType()]?.Invoke(firedEvent);
             }
-        } 
+        }
+
+        public static void Dispose()
+        {
+            foreach (var key in _systems.Keys.ToList())
+            {
+                _systems[key] = null;
+            }
+            
+            _systems.Clear();
+        }
     }
 }

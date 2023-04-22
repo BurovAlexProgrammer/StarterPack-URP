@@ -15,11 +15,18 @@ namespace _Project.Scripts.Main.Systems
         {
             base.AddEventHandlers();
             AddListener<TestEvent>(TestCallback);
+            AddListener<Test2Event>(TestCallback2);
         }
 
-        private void TestCallback(IEvent obj)
+        private void TestCallback(BaseEvent sourceEvent)
         {
-            throw new System.NotImplementedException();
+            var ev = sourceEvent as TestEvent;
+            Debug.Log("Event Name: "+ev.Name);
+        }
+        
+        private void TestCallback2(BaseEvent sourceEvent)
+        {
+            Debug.Log("Event Name: unknown");
         }
 
         public override void RemoveEventHandlers()

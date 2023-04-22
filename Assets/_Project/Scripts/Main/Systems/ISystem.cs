@@ -6,9 +6,9 @@ namespace _Project.Scripts.Main.Systems
 {
     public interface ISystem
     {
-        Dictionary<Type, Action<IEvent>> EventCallbacks { get; }
+        Dictionary<Type, Action<BaseEvent>> EventCallbacks { get; }
         void Init();
-        void AddListener<T>(Action<IEvent> callback) where T : IEvent;
+        void AddListener<T>(Action<BaseEvent> callback) where T : BaseEvent;
         void RemoveListener<T>();
         void AddEventHandlers();
         void RemoveEventHandlers();

@@ -2,7 +2,7 @@
 
 namespace _Project.Scripts.Main.Events
 {
-    public class BaseEvent : IEvent
+    public abstract class BaseEvent
     {
         public void Fire()
         {
