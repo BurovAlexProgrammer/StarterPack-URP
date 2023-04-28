@@ -6,14 +6,14 @@ using AudioSettings = _Project.Scripts.Main.Settings.AudioSettings;
 
 namespace _Project.Scripts.Main.AppServices
 {
-    public class SettingsService : BaseService
+    public class SettingsService : Old_BaseService
     {
         [SerializeField] private SettingGroup<VideoSettings> _videoSettings;
         [SerializeField] private SettingGroup<AudioSettings> _audioSettings;
         [SerializeField] private SettingGroup<GameSettings> _gameSettings;
 
         [Inject] private AudioService _audioService;
-        [Inject] private ScreenService _screenService;
+        [Inject] private Old_ScreenService _oldScreenService;
         
         
         private List<ISettingGroup> _settingList;
@@ -23,7 +23,7 @@ namespace _Project.Scripts.Main.AppServices
         public GameSettings GameSettings => _gameSettings.CurrentSettings;
 
         public AudioService AudioService => _audioService;
-        public ScreenService ScreenService => _screenService;
+        public Old_ScreenService OldScreenService => _oldScreenService;
 
         public void Init()
         {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.Main.AppServices
 {
-    public class DebugService : BaseService
+    public class DebugService : Old_BaseService
     {
         [SerializeField] private DebugServiceConfig _serviceConfig;
         [SerializeField] private GizmoItem _explosionGizmoPrefab;

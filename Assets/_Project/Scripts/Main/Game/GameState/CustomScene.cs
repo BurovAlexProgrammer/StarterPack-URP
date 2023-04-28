@@ -9,7 +9,7 @@ namespace _Project.Scripts.Main.Game.GameState
             public override async UniTask EnterState()
             {
                 await UniTask.Yield();
-                AppServices.Services.GameManagerService.PrepareToPlay();
+                AppServices.Old_Services.GameManagerService.PrepareToPlay();
             }
         }
     }

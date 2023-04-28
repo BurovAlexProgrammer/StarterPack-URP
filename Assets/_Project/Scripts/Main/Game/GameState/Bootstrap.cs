@@ -1,6 +1,6 @@
 ﻿using _Project.Scripts.Extension;
 using Cysharp.Threading.Tasks;
-using static _Project.Scripts.Main.AppServices.Services;
+using static _Project.Scripts.Main.AppServices.Old_Services;
 
 namespace _Project.Scripts.Main.Game.GameState
 {

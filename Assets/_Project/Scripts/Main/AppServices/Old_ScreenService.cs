@@ -6,7 +6,7 @@ using Zenject;
 
 namespace _Project.Scripts.Main.AppServices
 {
-    public class ScreenService : BaseService
+    public class Old_ScreenService : Old_BaseService
     {
         [SerializeField] private Camera _mainCamera;
         [SerializeField] private Volume _volume;

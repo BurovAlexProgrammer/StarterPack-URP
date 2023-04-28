@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.Main.AppServices
 {
-    public class ControlService : BaseService
+    public class ControlService : Old_BaseService
     {
         public Controls Controls { get; private set; }
         public CursorLockMode CursorLockState => Cursor.lockState;

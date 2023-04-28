@@ -9,7 +9,7 @@ namespace _Project.Scripts.Main
     {
         [SerializeField] private CameraTypes _camera;
 
-        [Inject] private ScreenService _screenService;
+        [Inject] private Old_ScreenService _oldScreenService;
 
         private enum CameraTypes
         {
@@ -20,7 +20,7 @@ namespace _Project.Scripts.Main
         private void OnEnable()
         {
             var canvas = GetComponent<Canvas>();
-            canvas.worldCamera = _camera == CameraTypes.MainCamera ? _screenService.MainCamera : null;
+            canvas.worldCamera = _camera == CameraTypes.MainCamera ? _oldScreenService.MainCamera : null;
             enabled = false;
         }
     }

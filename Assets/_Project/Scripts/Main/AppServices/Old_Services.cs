@@ -2,9 +2,9 @@ using System.Runtime.CompilerServices;
 
 namespace _Project.Scripts.Main.AppServices
 {
-    public static class Services
+    public static class Old_Services
     {
-        public static ScreenService ScreenService { get; private set; }
+        public static Old_ScreenService OldScreenService { get; private set; }
         public static SceneLoaderService SceneLoaderService { get; private set; }
         public static GameManagerService GameManagerService { get; private set; }
         public static LocalizationService LocalizationService { get; private set; }
@@ -14,12 +14,12 @@ namespace _Project.Scripts.Main.AppServices
         public static StatisticService StatisticService { get; private set; }
         public static ControlService ControlService { get; private set; }
 
-        public static void SetService<T>(T instance) where T : BaseService
+        public static void SetService<T>(T instance) where T : Old_BaseService
         {
             switch (instance)
             {
-                case ScreenService service:
-                    ScreenService = service;
+                case Old_ScreenService service:
+                    OldScreenService = service;
                     break;
                 case SceneLoaderService service:
                     SceneLoaderService = service;
@@ -55,12 +55,12 @@ namespace _Project.Scripts.Main.AppServices
             }
         }
         
-        public static void KillService<T>(T instance) where T : BaseService
+        public static void KillService<T>(T instance) where T : Old_BaseService
         {
             switch (instance)
             {
-                case AppServices.ScreenService:
-                    ScreenService = null;
+                case AppServices.Old_ScreenService:
+                    OldScreenService = null;
                     break;
                 case AppServices.SceneLoaderService:
                     SceneLoaderService = null;

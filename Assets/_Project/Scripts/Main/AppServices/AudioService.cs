@@ -9,7 +9,7 @@ namespace _Project.Scripts.Main.AppServices
 {
     [RequireComponent(typeof(AudioSource))]
     [RequireComponent(typeof(AudioSource))]
-    public class AudioService : BaseService
+    public class AudioService : Old_BaseService
     {
         [SerializeField] private AudioListener _audioListener;
         [SerializeField] private AudioSource _musicAudioSource;
@@ -18,7 +18,7 @@ namespace _Project.Scripts.Main.AppServices
         [SerializeField] private AudioClip[] _battlePlaylist;
         [SerializeField] private AudioClip[] _menuPlaylist;
 
-        [Inject] private ScreenService _screenService;
+        [Inject] private Old_ScreenService _oldScreenService;
 
         private MusicPlayerState _currentState;
 
@@ -29,7 +29,7 @@ namespace _Project.Scripts.Main.AppServices
 
         public void Init()
         {
-            _audioListener = _screenService.MainCamera.GetComponent<AudioListener>();
+            _audioListener = _oldScreenService.MainCamera.GetComponent<AudioListener>();
             _musicAudioSource = GetComponent<AudioSource>();
         }
 

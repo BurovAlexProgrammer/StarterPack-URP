@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.Main.AppServices
 {
-    public class PoolService : BaseService
+    public class PoolService : Old_BaseService
     {
         private Dictionary<MonoPoolItemBase, MonoPool> _poolDictionary;
 

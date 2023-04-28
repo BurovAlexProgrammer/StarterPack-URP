@@ -11,7 +11,7 @@ using Zenject;
 
 namespace _Project.Scripts.Main.AppServices
 {
-    public class GameManagerService : BaseService
+    public class GameManagerService : Old_BaseService
     {
         [SerializeField, ReadOnlyField] private GameStateMachine _gameStateMachine;
         [SerializeField, ReadOnlyField] private bool _isGamePause;
@@ -70,11 +70,11 @@ namespace _Project.Scripts.Main.AppServices
 
         public void PrepareToPlay()
         {
-            Services.AudioService.PlayMusic(AudioService.MusicPlayerState.Battle).Forget();
-            Services.ControlService.LockCursor();
-            Services.ControlService.Controls.Player.Enable();
-            Services.ControlService.Controls.Menu.Disable();
-            Services.StatisticService.ResetSessionRecords();
+            Old_Services.AudioService.PlayMusic(AudioService.MusicPlayerState.Battle).Forget();
+            Old_Services.ControlService.LockCursor();
+            Old_Services.ControlService.Controls.Player.Enable();
+            Old_Services.ControlService.Controls.Menu.Disable();
+            Old_Services.StatisticService.ResetSessionRecords();
         }
 
         public async void PauseGame(InputAction.CallbackContext ctx)

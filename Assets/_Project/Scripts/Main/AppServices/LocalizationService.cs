@@ -12,7 +12,7 @@ using Zenject;
 
 namespace _Project.Scripts.Main.AppServices
 {
-    public class LocalizationService : BaseService
+    public class LocalizationService : Old_BaseService
     {
         private Locales _currentLocale;
         private Dictionary<Locales, Localization> _localizations;

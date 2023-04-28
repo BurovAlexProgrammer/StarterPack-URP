@@ -6,18 +6,18 @@ namespace _Project.Scripts.Main
 {
     public class CameraHolder : MonoBehaviour
     {
-        [Inject] private ScreenService _screenService;
+        [Inject] private Old_ScreenService _oldScreenService;
         
         private void OnDestroy()
         {
-            if (_screenService == null || _screenService.MainCamera == null) return;
+            if (_oldScreenService == null || _oldScreenService.MainCamera == null) return;
             ReturnCameraToService();
         }
 
         public void SetCamera()
         {
             Debug.Log("Camera was moved to cameraHolder (Click to select CameraHolder)", this);
-            var mainCameraTransform = _screenService.MainCamera.transform;
+            var mainCameraTransform = _oldScreenService.MainCamera.transform;
             mainCameraTransform.parent = transform;
             mainCameraTransform.localPosition = Vector3.zero;
             mainCameraTransform.localRotation = Quaternion.identity;
@@ -25,9 +25,9 @@ namespace _Project.Scripts.Main
 
         public void ReturnCameraToService()
         {
-            var mainCameraTransform = _screenService.MainCamera.transform;
-            Debug.Log("Camera was moved to ScreenService", _screenService);
-            mainCameraTransform.parent = _screenService.transform;
+            var mainCameraTransform = _oldScreenService.MainCamera.transform;
+            Debug.Log("Camera was moved to ScreenService", _oldScreenService);
+            mainCameraTransform.parent = _oldScreenService.transform;
             mainCameraTransform.localPosition = Vector3.zero;
             mainCameraTransform.localRotation = Quaternion.identity;
         }

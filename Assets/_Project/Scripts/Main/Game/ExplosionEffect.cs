@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using static _Project.Scripts.Main.AppServices.Services;
+using static _Project.Scripts.Main.AppServices.Old_Services;
 
 namespace _Project.Scripts.Main.Game
 {

@@ -5,8 +5,9 @@ using _Project.Scripts.Main.Events;
 using _Project.Scripts.Main.Systems;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
-using static _Project.Scripts.Main.AppServices.Services;
+using static _Project.Scripts.Main.AppServices.Old_Services;
 using AudioService = _Project.Scripts.Main.AppServices.AudioService;
 
 namespace _Project.Scripts.Main.Installers
@@ -14,7 +15,7 @@ namespace _Project.Scripts.Main.Installers
     public class BootstrapInstaller : MonoInstaller
     {
         [SerializeField] private SceneLoaderService _sceneLoaderServicePrefab;
-        [SerializeField] private ScreenService _screenServicePrefab;
+        [SerializeField] private Old_ScreenService _screenServicePrefab;
         [SerializeField] private SettingsService _settingsServicePrefab;
         [SerializeField] private GameManagerService _gameManagerServicePrefab;
         [SerializeField] private LocalizationService _localizationServicePrefab;
@@ -26,7 +27,7 @@ namespace _Project.Scripts.Main.Installers
         public override void InstallBindings()
         {
             gameObject.name = "Services";
-            DOTween.SetTweensCapacity(1000, 50);
+            
             InstallSceneLoaderService();
             InstallScreenService();
             InstallAudioService();
@@ -126,11 +127,11 @@ namespace _Project.Scripts.Main.Installers
         private void InstallScreenService()
         {
             Container
-                .Bind<ScreenService>()
+                .Bind<Old_ScreenService>()
                 .FromComponentInNewPrefab(_screenServicePrefab)
                 .WithGameObjectName("Screen Service")
                 .AsSingle()
-                .OnInstantiated((ctx, instance) => SetService((ScreenService)instance))
+                .OnInstantiated((ctx, instance) => SetService((Old_ScreenService)instance))
                 .NonLazy();
         }
 

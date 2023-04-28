@@ -9,7 +9,7 @@ using static _Project.Scripts.Main.StatisticData;
 
 namespace _Project.Scripts.Main.AppServices
 {
-    public class StatisticService : BaseService
+    public class StatisticService : Old_BaseService
     {
         public Action<RecordName, string> RecordChanged; 
         

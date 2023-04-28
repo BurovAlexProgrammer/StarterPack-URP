@@ -263,6 +263,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4564600528169677035}
   - component: {fileID: 144474506516546969}
+  - component: {fileID: -1272852586313317906}
   m_Layer: 0
   m_Name: Screen Service
   m_TagString: Untagged
@@ -304,6 +305,18 @@ MonoBehaviour:
   _volume: {fileID: 1334056055456013422}
   _internalProfiler: {fileID: 394764085355896457}
   _showProfilerOnStartup: 0
+--- !u!114 &-1272852586313317906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3942499858685322436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd25f3b785574320ace824b766f9f098, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6277336056987725482
 GameObject:
   m_ObjectHideFlags: 0
