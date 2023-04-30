@@ -7,6 +7,11 @@ namespace _Project.Scripts.Extension
 {
     public static partial class Common
     {
+        public static void CleanName(this GameObject gameObject)
+        {
+            gameObject.name = gameObject.name.Replace("(Clone)", "").Trim();
+        }
+        
         public static void SetScale(this RectTransform rectTransform, float x = float.NaN, float y = float.NaN, float z = float.NaN)
         {
             var localScale = rectTransform.localScale;
@@ -23,7 +28,7 @@ namespace _Project.Scripts.Extension
                 rootGameObject.SetActive(state);
             }
         }
-        
+
         public static bool IsDestroyed(this GameObject gameObject)
         {
             return gameObject == null && !ReferenceEquals(gameObject, null);

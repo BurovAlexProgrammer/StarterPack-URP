@@ -1,37 +1,38 @@
 ﻿using _Project.Scripts.Extension;
+using Codice.Client.BaseCommands;
 using Tayx.Graphy;
 using UnityEngine;
 using UnityEngine.Rendering;
-using Zenject;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace _Project.Scripts.Main.AppServices
 {
-    public class ScreenService : MonoService, IScreenService
+    public class ScreenService : IService, IConstructInstaller
     {
-        [SerializeField] private Camera _mainCamera;
-        [SerializeField] private Volume _volume;
-        [SerializeField] private GraphyManager _internalProfiler;
-        [SerializeField] private bool _showProfilerOnStartup;
+        public Camera CameraMain;
+        public Volume Volume;
+        private GraphyManager InternalProfiler;
 
-        [Inject] private ControlService _controlService;
-
-        public Camera MainCamera => _mainCamera;
-        public VolumeProfile VolumeProfile => _volume.profile;
-
-        private void Awake()
+        private void Foo()
         {
-            var controls = _controlService.Controls;
-            _internalProfiler.enabled = _showProfilerOnStartup;
-            controls.Player.InternalProfiler.BindAction(BindActions.Started, ctx => ToggleShowProfiler());
+            //var controls = _controlService.Controls;
+            //controls.Player.InternalProfiler.BindAction(BindActions.Started, ctx => ToggleShowProfiler());
+            //TODO to Systems
         }
 
         private void ToggleShowProfiler()
         {
-            _internalProfiler.enabled = !_internalProfiler.enabled;
+            InternalProfiler.enabled = !InternalProfiler.enabled;
         }
-    }
 
-    public interface IScreenService : IService
-    {
+        public void Construct(IServiceInstaller installer)
+        {
+            var screenServiceInstaller = installer.Install() as ScreenServiceInstaller;
+            InternalProfiler = screenServiceInstaller.InternalProfiler;
+            CameraMain = screenServiceInstaller.CameraMain;
+            Volume = screenServiceInstaller.Volume;
+            InternalProfiler.enabled = screenServiceInstaller.ShowProfilerOnStartup;
+        }
     }
 }

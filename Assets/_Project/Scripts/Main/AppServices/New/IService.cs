@@ -1,4 +1,4 @@
-namespace _Project.Scripts.Main.AppServices
+﻿namespace _Project.Scripts.Main.AppServices
 {
     public interface IService
     {

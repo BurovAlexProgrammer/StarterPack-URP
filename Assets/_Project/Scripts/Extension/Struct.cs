@@ -57,5 +57,10 @@ namespace _Project.Scripts.Extension
         {
             return Random.Range(rangedFloat.MinValue, rangedFloat.MaxValue);
         }
+
+        public static void Toggle(this ref bool value)
+        {
+            value = !value;
+        }   
     }
 }
