@@ -26,11 +26,11 @@ namespace _Project.Scripts.Main.AppServices
 
         public static void FireEvent<T>(T firedEvent) where T : BaseEvent
         {
-            Debug.Log("Fired");
+            Debug.Log($"Fired event <color=orange>{firedEvent.GetType().Name}</color>. {DateTime.Now.ToString("hh:mm:ss")}");
             
             foreach (var (key, system) in _systems)
             {
-                if (system.EventCallbacks.ContainsKey(firedEvent.GetType()) == false) return;
+                if (system.EventCallbacks.ContainsKey(firedEvent.GetType()) == false) continue;
                 
                 system.EventCallbacks[firedEvent.GetType()]?.Invoke(firedEvent);
             }

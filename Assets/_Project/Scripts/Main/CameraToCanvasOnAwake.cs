@@ -1,17 +1,14 @@
 using _Project.Scripts.Main.AppServices;
 using UnityEngine;
-using Zenject;
 
 namespace _Project.Scripts.Main
 {
     [RequireComponent(typeof(Canvas))]
     public class CameraToCanvasOnAwake : MonoBehaviour
     {
-        [SerializeField] private CameraTypes _camera;
+        [SerializeField] private CameraType _cameraType;
 
-        [Inject] private Old_ScreenService _oldScreenService;
-
-        private enum CameraTypes
+        private enum CameraType
         {
             MainCamera,
             UiCamera
@@ -20,7 +17,8 @@ namespace _Project.Scripts.Main
         private void OnEnable()
         {
             var canvas = GetComponent<Canvas>();
-            canvas.worldCamera = _camera == CameraTypes.MainCamera ? _oldScreenService.MainCamera : null;
+            var screenService = Services.Get<ScreenService>();
+            canvas.worldCamera = _cameraType == CameraType.MainCamera ? screenService.CameraMain : screenService.CameraUI;
             enabled = false;
         }
     }

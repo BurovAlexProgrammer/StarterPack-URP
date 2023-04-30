@@ -19,7 +19,7 @@ namespace _Project.Scripts.Main.Installers
         [SerializeField] private SettingsService _settingsServicePrefab;
         [SerializeField] private GameManagerService _gameManagerServicePrefab;
         [SerializeField] private LocalizationService _localizationServicePrefab;
-        [SerializeField] private ControlService _controlServicePrefab;
+        [SerializeField] private Old_ControlService _controlServicePrefab;
         [SerializeField] private DebugService _debugServicePrefab;
         [SerializeField] private AudioService _audioServicePrefab;
         [SerializeField] private StatisticService _statisticServicePrefab;
@@ -101,11 +101,11 @@ namespace _Project.Scripts.Main.Installers
         private void InstallControlService()
         {
             Container
-                .Bind<ControlService>()
+                .Bind<Old_ControlService>()
                 .FromComponentInNewPrefab(_controlServicePrefab)
                 .WithGameObjectName("Control Service")
                 .AsSingle()
-                .OnInstantiated((ctx, instance) => SetService(instance as ControlService))
+                .OnInstantiated((ctx, instance) => SetService(instance as Old_ControlService))
                 .NonLazy();
         }
 

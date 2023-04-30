@@ -17,6 +17,11 @@ namespace _Project.Scripts.Main.AppServices
             
             var newService = Activator.CreateInstance<T>();
 
+            if (newService is IConstruct)
+            {
+                (newService as IConstruct).Construct();
+            }
+            
             if (newService is IConstructInstaller)
             {
                 throw new Exception($"Service {typeof(T).Name} has Construct. Use Services.Register(IServiceInstaller installer) instead");
@@ -43,17 +48,17 @@ namespace _Project.Scripts.Main.AppServices
             _registeredServices.Add(typeof(T), newService);
         }
 
-        public static IService Get<T>() where T : IService
+        public static T Get<T>() where T : IService
         {
             if (_registeredServices.ContainsKey(typeof(T)) == false)
             {
                 throw new Exception($"Service type of {typeof(T).Name} not found.");
             }
             
-            return _registeredServices[typeof(T)];
+            return (T)_registeredServices[typeof(T)];
         }
 
-        public static void Clear()
+        public static void Dispose()
         {
             foreach (var type in _registeredServices.Keys.ToList())
             {

@@ -26,7 +26,8 @@ namespace _Project.Scripts.Main.Game
 
         private void OnApplicationQuit()
         {
-            Services.Clear();
+            Services.Dispose();
+            SystemsService.Dispose();
         }
     }
 }

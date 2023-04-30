@@ -12,7 +12,7 @@ namespace _Project.Scripts.Main.AppServices
         public static PoolService PoolService { get; private set; }
         public static AudioService AudioService { get; private set; }
         public static StatisticService StatisticService { get; private set; }
-        public static ControlService ControlService { get; private set; }
+        public static Old_ControlService ControlService { get; private set; }
 
         public static void SetService<T>(T instance) where T : Old_BaseService
         {
@@ -46,7 +46,7 @@ namespace _Project.Scripts.Main.AppServices
                     service.Init();
                     StatisticService = service;
                     break;
-                case ControlService service:
+                case Old_ControlService service:
                     service.Init();
                     ControlService = service;
                     break;

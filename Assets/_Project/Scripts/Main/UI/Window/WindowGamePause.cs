@@ -21,7 +21,7 @@ namespace _Project.Scripts.Main.UI.Window
 
         [Inject] private GameManagerService _gameManager;
         [Inject] private SettingsService _settingsService;
-        [Inject] private ControlService _controlService;
+        [Inject] private Old_ControlService _controlService;
 
         private void Awake()
         {

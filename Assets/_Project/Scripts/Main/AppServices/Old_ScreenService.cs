@@ -13,7 +13,7 @@ namespace _Project.Scripts.Main.AppServices
         [SerializeField] private GraphyManager _internalProfiler;
         [SerializeField] private bool _showProfilerOnStartup;
 
-        [Inject] private ControlService _controlService;
+        [Inject] private Old_ControlService _controlService;
 
         public Camera MainCamera => _mainCamera;
         public VolumeProfile VolumeProfile => _volume.profile;

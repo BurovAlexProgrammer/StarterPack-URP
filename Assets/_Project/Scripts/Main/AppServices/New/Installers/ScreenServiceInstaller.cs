@@ -9,8 +9,10 @@ namespace _Project.Scripts.Main.AppServices
     public class ScreenServiceInstaller : MonoBehaviour, IServiceInstaller
     {
         public Camera CameraMain;
+        public Camera CameraUI;
         public Volume Volume;
-        public GraphyManager InternalProfiler;
+        public GameObject InternalProfiler;
+        public Toggle InternalProfilerToggle;
         public Image CameraTopFrame;
         public bool ShowProfilerOnStartup;
         

@@ -46,3 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _screenServiceInstaller: {fileID: 1543392662552298820, guid: c3217b61733167c499178907a758f927,
     type: 3}
+  _controlServiceInstaller: {fileID: -2391650820629839410, guid: 40119e48525aa3c43854e26c457a94a9,
+    type: 3}

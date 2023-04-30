@@ -14,6 +14,15 @@ namespace _Project.Scripts.Main.Systems
         {
         }
 
+        public virtual void OnDispose()
+        {
+        }
+
+        ~BaseSystem()
+        {
+            OnDispose();
+        }
+
         public void AddListener<T>(Action<BaseEvent> callback) where T : BaseEvent
         {
             var type = typeof(T);

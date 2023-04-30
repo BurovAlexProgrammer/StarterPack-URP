@@ -1,26 +1,11 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace _Project.Scripts.Main.AppServices
 {
-    public class ControlService : Old_BaseService
+    public class ControlService: IService, IConstructInstaller
     {
         public Controls Controls { get; private set; }
         public CursorLockMode CursorLockState => Cursor.lockState;
-
-        private void OnEnable()
-        {
-            Controls.Enable();
-        }
-
-        private void OnDisable()
-        {
-            Controls.Disable();
-        }
-
-        public void Init()
-        {
-            Controls = new Controls();
-        }
 
         public void LockCursor()
         {
@@ -30,6 +15,12 @@ namespace _Project.Scripts.Main.AppServices
         public void UnlockCursor()
         {
             Cursor.lockState = CursorLockMode.None;
+        }
+
+        public void Construct(IServiceInstaller installer)
+        {
+            Controls = new Controls();
+            var controlInstaller = installer.Install() as ControlServiceInstaller;
         }
     }
 }

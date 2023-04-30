@@ -1,9 +1,7 @@
 ﻿using _Project.Scripts.Extension;
-using Codice.Client.BaseCommands;
 using Tayx.Graphy;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.Main.AppServices
@@ -11,19 +9,15 @@ namespace _Project.Scripts.Main.AppServices
     public class ScreenService : IService, IConstructInstaller
     {
         public Camera CameraMain;
+        public Camera CameraUI;
         public Volume Volume;
-        private GraphyManager InternalProfiler;
-
-        private void Foo()
+        public GameObject InternalProfiler;
+        public Toggle InternalProfilerToggle;
+        
+        public void ToggleDisplayProfiler()
         {
-            //var controls = _controlService.Controls;
-            //controls.Player.InternalProfiler.BindAction(BindActions.Started, ctx => ToggleShowProfiler());
-            //TODO to Systems
-        }
-
-        private void ToggleShowProfiler()
-        {
-            InternalProfiler.enabled = !InternalProfiler.enabled;
+            InternalProfiler.gameObject.SwitchActive();
+            InternalProfilerToggle.isOn = InternalProfiler.gameObject.activeSelf;
         }
 
         public void Construct(IServiceInstaller installer)
@@ -31,8 +25,10 @@ namespace _Project.Scripts.Main.AppServices
             var screenServiceInstaller = installer.Install() as ScreenServiceInstaller;
             InternalProfiler = screenServiceInstaller.InternalProfiler;
             CameraMain = screenServiceInstaller.CameraMain;
+            CameraUI = screenServiceInstaller.CameraUI;
             Volume = screenServiceInstaller.Volume;
-            InternalProfiler.enabled = screenServiceInstaller.ShowProfilerOnStartup;
+            InternalProfilerToggle = screenServiceInstaller.InternalProfilerToggle;
+            InternalProfiler.SetActive(screenServiceInstaller.ShowProfilerOnStartup);
         }
     }
 }

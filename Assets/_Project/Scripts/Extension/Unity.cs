@@ -28,6 +28,11 @@ namespace _Project.Scripts.Extension
                 rootGameObject.SetActive(state);
             }
         }
+        
+        public static void SwitchActive(this GameObject gameObject)
+        {
+            gameObject.SetActive(!gameObject.activeSelf);
+        }
 
         public static bool IsDestroyed(this GameObject gameObject)
         {
