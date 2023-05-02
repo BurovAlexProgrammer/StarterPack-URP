@@ -17,7 +17,9 @@ namespace _Project.Scripts.Main.AppServices
         public void ToggleDisplayProfiler()
         {
             InternalProfiler.gameObject.SwitchActive();
-            InternalProfilerToggle.isOn = InternalProfiler.gameObject.activeSelf;
+            InternalProfilerToggle.SetIsOnWithoutNotify(InternalProfiler.gameObject.activeSelf);
+            InternalProfilerToggle.gameObject.SetActive(false);
+            InternalProfilerToggle.gameObject.SetActive(true);
         }
 
         public void Construct(IServiceInstaller installer)

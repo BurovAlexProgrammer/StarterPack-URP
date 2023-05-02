@@ -1,3 +1,4 @@
+using System;
 using _Project.Scripts.Extension;
 using DG.Tweening;
 using UnityEngine;
@@ -28,12 +29,17 @@ namespace _Project.Scripts.Main.UI.ToggleView
             _handleActivePosition.Set(x: -_handleRect.rect.width / 2);
             _inactiveHandleColor = _handleImage.color;
             _inactiveBackColor = _handleBack.color;
-            _toggle.onValueChanged.AddListener(OnSwitch);
         }
 
-        private void Start()
+        private void OnEnable()
         {
+            _toggle.onValueChanged.AddListener(OnSwitch);
             OnSwitch(_toggle.isOn);
+        }
+
+        private void OnDisable()
+        {
+            _toggle.onValueChanged.RemoveListener(OnSwitch);
         }
 
         private void OnSwitch(bool newState)
