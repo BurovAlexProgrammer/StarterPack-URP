@@ -1,5 +1,5 @@
-﻿using _Project.Scripts.Main.Game;
-using Tayx.Graphy;
+﻿using _Project.Scripts.Extension;
+using _Project.Scripts.Main.Game;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -19,6 +19,7 @@ namespace _Project.Scripts.Main.AppServices
         public IServiceInstaller Install()
         {
             var installer = Instantiate(this, AppContext.ServicesHierarchy.transform);
+            installer.gameObject.CleanName();
             return installer;
         }
     }
