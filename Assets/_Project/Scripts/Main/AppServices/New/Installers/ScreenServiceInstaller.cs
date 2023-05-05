@@ -18,7 +18,7 @@ namespace _Project.Scripts.Main.AppServices
         
         public IServiceInstaller Install()
         {
-            var installer = Instantiate(this, AppContext.ServicesHierarchy.transform);
+            var installer = Instantiate(this, AppContext.ServicesHierarchy);
             installer.gameObject.CleanName();
             return installer;
         }

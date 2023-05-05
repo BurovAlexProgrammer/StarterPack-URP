@@ -1,10 +1,8 @@
-﻿
+﻿#if UNITY_EDITOR
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-#if UNITY_EDITOR
 using UnityEditor;
-#endif
 
 namespace _Project.Scripts.Extension
 {
@@ -12,20 +10,15 @@ namespace _Project.Scripts.Extension
     {
         public static void CollapseHierarchyItem(Object gameObject)
         {
-#if UNITY_EDITOR
             SetCollapseHierarchyItem(gameObject);
-#endif
         }
         public static void ExpandHierarchyItem(Object gameObject)
         {
-#if UNITY_EDITOR
             SetCollapseHierarchyItem(gameObject, false);
-#endif
         }
 
         public static void ExpandScene(Scene scene)
         {
-#if UNITY_EDITOR
             var hierarchy = GetFocusedWindow("Hierarchy");
 
             if (hierarchy == null)
@@ -44,10 +37,8 @@ namespace _Project.Scripts.Extension
             
             key = new Event { keyCode =  KeyCode.RightArrow , type = EventType.KeyDown };
             hierarchy.SendEvent(key);
-#endif
         }
         
-#if UNITY_EDITOR
         private static void SetCollapseHierarchyItem(Object gameObject, bool collapse = true)
         {
             var hierarchy = GetFocusedWindow("Hierarchy");
@@ -73,6 +64,6 @@ namespace _Project.Scripts.Extension
         {
             EditorApplication.ExecuteMenuItem("Window/General/" + window);
         }
-#endif
     }
 }
+#endif

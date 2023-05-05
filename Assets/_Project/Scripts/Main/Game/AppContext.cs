@@ -1,5 +1,4 @@
-﻿using System;
-using _Project.Scripts.Extension;
+﻿using _Project.Scripts.Extension;
 using _Project.Scripts.Main.AppServices;
 using UnityEngine;
 
@@ -7,17 +6,15 @@ namespace _Project.Scripts.Main.Game
 {
     public class AppContext : MonoBehaviour
     {
-        public static GameObject Hierarchy;
-        public static GameObject ServicesHierarchy;
+        public static Transform Hierarchy;
+        public static Transform ServicesHierarchy;
 
-        public static AppContext Instantiate()
+        public static void Instantiate()
         {
-            Hierarchy = new GameObject() {name = "AppContext"};
-            var appContext = Hierarchy.AddComponent<AppContext>();
-            ServicesHierarchy = new GameObject() {name = "Services"};
-            ServicesHierarchy.transform.SetParent(Hierarchy.transform);
-             
-            return appContext;
+            Hierarchy = new GameObject() {name = "AppContext"}.transform;
+            Hierarchy.gameObject.AddComponent<AppContext>();
+            ServicesHierarchy = new GameObject() {name = "Services"}.transform;
+            ServicesHierarchy.SetParent(Hierarchy);
         }
         
         private void Awake()
@@ -28,10 +25,12 @@ namespace _Project.Scripts.Main.Game
 
         private void Start()
         {
-            UnityEditorUtility.ExpandScene(Hierarchy.scene);
+            #if UNITY_EDITOR
+            UnityEditorUtility.ExpandScene(Hierarchy.gameObject.scene);
             UnityEditorUtility.ExpandHierarchyItem(Hierarchy);
             UnityEditorUtility.ExpandHierarchyItem(ServicesHierarchy);
             UnityEditorUtility.ExpandHierarchyItem(ServicesHierarchy);
+            #endif
         }
 
         private void OnApplicationQuit()

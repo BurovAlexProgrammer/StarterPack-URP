@@ -8,15 +8,15 @@ namespace _Project.Scripts.Main.Wrappers
     [Serializable]
     public class MonoPool
     {
-        private MonoPoolItemBase _prefab;
+        private GameObject _prefab;
         private int _initCapacity;
         private int _maxCapacity;
         private int _instanceCount;
         private Transform _container;
         private OverAllocationBehaviour _overAllocationBehaviour;
 
-        private Queue<MonoPoolItemBase> _inactivePool;
-        private List<MonoPoolItemBase> _activePool;
+        private Queue<GameObject> _inactivePool;
+        private List<GameObject> _activePool;
 
         public enum OverAllocationBehaviour
         {
@@ -26,22 +26,23 @@ namespace _Project.Scripts.Main.Wrappers
             DestructFirst
         }
 
-        public MonoPool(MonoPoolItemBase prefab, Transform container, int initialCapacity, int maxCapacity, OverAllocationBehaviour behaviour = OverAllocationBehaviour.Warning)
+        public MonoPool(GameObject prefab, Transform container, int initialCapacity, int maxCapacity, OverAllocationBehaviour behaviour = OverAllocationBehaviour.Warning)
         {
-            Clear();
             _prefab = prefab;
             _container = container;
             _initCapacity = initialCapacity;
             _maxCapacity = maxCapacity;
             _overAllocationBehaviour = behaviour;
-
+            _inactivePool = new Queue<GameObject>(_initCapacity);
+            _activePool = new List<GameObject>(_initCapacity);
+            
             for (var i = 0; i < _initCapacity; i++)
             {
                 AddInstance();
             }
         }
         
-        public MonoPoolItemBase Get()
+        public GameObject Get()
         {
             if (_inactivePool.Count == 0)
             {
@@ -74,8 +75,8 @@ namespace _Project.Scripts.Main.Wrappers
                 }
             }
             
-            _inactivePool = new Queue<MonoPoolItemBase>();
-            _activePool = new List<MonoPoolItemBase>();
+            _inactivePool = new Queue<GameObject>();
+            _activePool = new List<GameObject>();
         }
 
         public void DeactivateItems()
@@ -86,7 +87,7 @@ namespace _Project.Scripts.Main.Wrappers
                 {
                     if (item.gameObject.activeSelf == false) continue; 
                         
-                    item.ReturnToPool();
+                    item.SetActive(false);
                 }
             }
         }
@@ -114,14 +115,13 @@ namespace _Project.Scripts.Main.Wrappers
             var instance = Object.Instantiate(_prefab, _container);
             instance.gameObject.name = _prefab.name + " " + (_inactivePool.Count + _activePool.Count + 1);
             instance.gameObject.SetActive(false);
-            instance.Returned += OnItemReturn;
             _inactivePool.Enqueue(instance);
             _instanceCount++;
         }
 
-        private void OnItemReturn(MonoPoolItemBase item)
+        private void OnItemReturn(GameObject item)
         {
-            var index = _activePool.FindIndex(x => x.Id == item.Id);
+            var index = _activePool.FindIndex(x => x == item);
             
             if (index < 0) return;
             
