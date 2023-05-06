@@ -7,50 +7,62 @@ namespace _Project.Scripts.Main.AppServices
 {
     public class PoolService : IService, IConstruct
     {
-        private Dictionary<GameObject, MonoPool> _poolDictionary;
+        private Dictionary<object, Pool> _poolDictionary = new Dictionary<object, Pool>();
         private Transform _itemsContainer;
 
         public void Init()
         {
-            _poolDictionary = new Dictionary<GameObject, MonoPool>();
+            _poolDictionary = new Dictionary<object, Pool>();
         }
 
-        public GameObject GetAndActivate(GameObject prefab)
+        public object GetAndActivate(object prefab)
         {
-            var result = Get(prefab);
-            result.gameObject.SetActive(true);
-            return result;
+            var poolItem = Get(prefab);
+            poolItem.GameObject?.SetActive(true);
+            return poolItem;
         }
 
-        public MonoPool CreatePool(GameObject prefab, int initialCapacity = 1, int maxCapacity = 20, MonoPool.OverAllocationBehaviour behaviour = MonoPool.OverAllocationBehaviour.Warning)
+        public Pool CreatePool(object objectRef, int initialCapacity = 1, int maxCapacity = 20, Pool.OverAllocationBehaviour behaviour = Pool.OverAllocationBehaviour.Warning)
         {
-            _poolDictionary ??= new Dictionary<GameObject, MonoPool>();
+            _poolDictionary ??= new Dictionary<object, Pool>();
             
-            if (_poolDictionary.ContainsKey(prefab))
+            if (_poolDictionary.ContainsKey(objectRef))
             {
-                return _poolDictionary[prefab];
+                return _poolDictionary[objectRef];
             }
+            
+            Transform poolContainer;
 
-            return new MonoPool(prefab, _itemsContainer, initialCapacity, maxCapacity, behaviour);
+            if (objectRef is GameObject gameObject)
+            {
+                poolContainer = new GameObject(gameObject.name).transform;
+                poolContainer.transform.SetParent(_itemsContainer);
+            }
+            else if (objectRef is MonoBehaviour monoBehaviour)
+            {
+                poolContainer = new GameObject(monoBehaviour.gameObject.name).transform;
+                poolContainer.transform.SetParent(_itemsContainer);
+            }
+            else
+            {
+                poolContainer = _itemsContainer;
+            }
+            
+            var newPool = new Pool(objectRef, poolContainer.transform, initialCapacity, maxCapacity, behaviour);
+            _poolDictionary.Add(objectRef, newPool);
+            
+            return newPool;
         }
         
-        public GameObject Get(GameObject prefab)
+        public PoolItem Get(object objectKey)
         {
-            if (_poolDictionary == null)
+            if (_poolDictionary == null || !_poolDictionary.ContainsKey(objectKey))
             {
                 Debug.LogWarning("Pool created automatically by call method PoolService.Get(Prefab).");
-                CreatePool(prefab);
-            }
-            
-            if (!_poolDictionary.ContainsKey(prefab))
-            {
-                var newContainer = new GameObject(prefab.name);
-                newContainer.transform.SetParent(_itemsContainer);
-                var newPool = new MonoPool(prefab, newContainer.transform, 10, 20);
-                _poolDictionary.Add(prefab, newPool);
+                CreatePool(objectKey);
             }
 
-            return _poolDictionary[prefab].Get();
+            return _poolDictionary[objectKey].Get();
         }
 
         public void Reset()

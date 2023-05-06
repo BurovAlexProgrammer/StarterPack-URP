@@ -7,9 +7,10 @@ namespace _Project.Scripts.Extension
 {
     public static partial class Common
     {
-        public static void CleanName(this GameObject gameObject)
+        public static string CleanName(this GameObject gameObject)
         {
             gameObject.name = gameObject.name.Replace("(Clone)", "").Trim();
+            return gameObject.name;
         }
         
         public static void SetScale(this RectTransform rectTransform, float x = float.NaN, float y = float.NaN, float z = float.NaN)

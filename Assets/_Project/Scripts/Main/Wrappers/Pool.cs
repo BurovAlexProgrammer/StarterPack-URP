@@ -6,17 +6,17 @@ using Object = UnityEngine.Object;
 namespace _Project.Scripts.Main.Wrappers
 {
     [Serializable]
-    public class MonoPool
+    public class Pool
     {
-        private GameObject _prefab;
+        private object _originRef;
         private int _initCapacity;
         private int _maxCapacity;
         private int _instanceCount;
         private Transform _container;
         private OverAllocationBehaviour _overAllocationBehaviour;
 
-        private Queue<GameObject> _inactivePool;
-        private List<GameObject> _activePool;
+        private Queue<PoolItem> _inactivePool;
+        private List<PoolItem> _activePool;
 
         public enum OverAllocationBehaviour
         {
@@ -26,15 +26,15 @@ namespace _Project.Scripts.Main.Wrappers
             DestructFirst
         }
 
-        public MonoPool(GameObject prefab, Transform container, int initialCapacity, int maxCapacity, OverAllocationBehaviour behaviour = OverAllocationBehaviour.Warning)
+        public Pool(object originRef, Transform container, int initialCapacity, int maxCapacity, OverAllocationBehaviour behaviour = OverAllocationBehaviour.Warning)
         {
-            _prefab = prefab;
+            _originRef = originRef;
             _container = container;
             _initCapacity = initialCapacity;
             _maxCapacity = maxCapacity;
             _overAllocationBehaviour = behaviour;
-            _inactivePool = new Queue<GameObject>(_initCapacity);
-            _activePool = new List<GameObject>(_initCapacity);
+            _inactivePool = new Queue<PoolItem>(_initCapacity);
+            _activePool = new List<PoolItem>(_initCapacity);
             
             for (var i = 0; i < _initCapacity; i++)
             {
@@ -42,7 +42,7 @@ namespace _Project.Scripts.Main.Wrappers
             }
         }
         
-        public GameObject Get()
+        public PoolItem Get()
         {
             if (_inactivePool.Count == 0)
             {
@@ -63,7 +63,9 @@ namespace _Project.Scripts.Main.Wrappers
             {
                 foreach (var item in _inactivePool.ToArray())
                 {
-                    Object.DestroyImmediate(item.gameObject);
+                    if (item.GameObject == null) continue;
+
+                    Object.DestroyImmediate(item.GameObject.gameObject);
                 }
             }
 
@@ -71,12 +73,14 @@ namespace _Project.Scripts.Main.Wrappers
             {
                 foreach (var item in _activePool.ToArray())
                 {
-                    Object.DestroyImmediate(item);
+                    if (item.GameObject == null) continue;
+
+                    Object.DestroyImmediate(item.GameObject.gameObject);
                 }
             }
             
-            _inactivePool = new Queue<GameObject>();
-            _activePool = new List<GameObject>();
+            _inactivePool = new Queue<PoolItem>();
+            _activePool = new List<PoolItem>();
         }
 
         public void DeactivateItems()
@@ -85,9 +89,10 @@ namespace _Project.Scripts.Main.Wrappers
             {
                 foreach (var item in _activePool.ToArray())
                 {
-                    if (item.gameObject.activeSelf == false) continue; 
+                    if (item.GameObject == null) continue; 
+                    if (item.GameObject.activeSelf == false) continue; 
                         
-                    item.SetActive(false);
+                    item.GameObject.SetActive(false);
                 }
             }
         }
@@ -99,7 +104,7 @@ namespace _Project.Scripts.Main.Wrappers
                 switch (_overAllocationBehaviour)
                 {
                     case OverAllocationBehaviour.Warning:
-                        Debug.LogWarning($"Pool of '{_prefab.name}' is over allocated.");
+                        Debug.LogWarning($"Pool of '{GetName(_originRef)}' is over allocated.");
                         break;
                     case OverAllocationBehaviour.ReplaceFirst:
                         break;
@@ -111,15 +116,30 @@ namespace _Project.Scripts.Main.Wrappers
                         throw new ArgumentOutOfRangeException();
                 }
             }
+
+            object newInstance;
+            var nextIndex = (_inactivePool.Count + _activePool.Count + 1);
             
-            var instance = Object.Instantiate(_prefab, _container);
-            instance.gameObject.name = _prefab.name + " " + (_inactivePool.Count + _activePool.Count + 1);
-            instance.gameObject.SetActive(false);
-            _inactivePool.Enqueue(instance);
+            switch (_originRef)
+            {
+                case GameObject gameObject:
+                    newInstance = GameObject.Instantiate(gameObject, _container);
+                    break;
+                case MonoBehaviour monoBehaviour:
+                    newInstance = GameObject.Instantiate(monoBehaviour, _container);
+                    break;
+                default:
+                    var originType = _originRef.GetType();
+                    newInstance = Activator.CreateInstance(originType);
+                    break;
+            }
+            
+            var newItem = new PoolItem(newInstance, nextIndex);
+            _inactivePool.Enqueue(newItem);
             _instanceCount++;
         }
 
-        private void OnItemReturn(GameObject item)
+        private void OnItemReturn(PoolItem item)
         {
             var index = _activePool.FindIndex(x => x == item);
             
@@ -127,6 +147,14 @@ namespace _Project.Scripts.Main.Wrappers
             
             _activePool.RemoveAt(index);
             _inactivePool.Enqueue(item);
+        }
+
+        private string GetName(object obj)
+        {
+            return 
+                _originRef is GameObject ? (_originRef as GameObject).name :
+                _originRef is MonoBehaviour ? (_originRef as MonoBehaviour).gameObject.name :
+                _originRef.GetType().Name;
         }
     }
 }
