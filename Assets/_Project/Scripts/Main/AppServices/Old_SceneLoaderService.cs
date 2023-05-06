@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 namespace _Project.Scripts.Main.AppServices
 {
-    public class SceneLoaderService : Old_BaseService
+    public class Old_SceneLoaderService : Old_BaseService
     {
         [SerializeField] private ScenePicker _mainMenuScene;
         [SerializeField] private CanvasGroup _blackFrame;

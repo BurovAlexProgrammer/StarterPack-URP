@@ -22,6 +22,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - scene
+  - m_GUID: fcc1b7087e75c244687dfd64b8f81f2d
+    m_Address: Intro
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - scene
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: fd73b48df9aa6a04aad1743f5397afa7, type: 2}
   m_SchemaSet:

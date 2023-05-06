@@ -1,10 +1,9 @@
-﻿using System;
-using _Project.Scripts.Main.AppServices;
+﻿using _Project.Scripts.Main.AppServices;
 using _Project.Scripts.Main.Events;
+using _Project.Scripts.Main.Game;
 using _Project.Scripts.Main.Systems;
 using DG.Tweening;
 using UnityEngine;
-using AppContext = _Project.Scripts.Main.Game.AppContext;
 
 namespace _Project.Scripts.Main.Installers
 {
@@ -24,14 +23,13 @@ namespace _Project.Scripts.Main.Installers
             Services.Register<ScreenService>(_screenServiceInstaller);
             Services.Register<PoolService>();
             Services.Register<DebugService>(_debugServiceInstaller);
+            Services.Register<SceneLoaderService>();
             
             SystemsService.Bind<ControlSystem>();
             SystemsService.Bind<ScreenSystem>();
+            SystemsService.Bind<SceneLoaderSystem>();
             
-            SystemsService.Bind<TestSystem>();
-            
-            new TestEvent(){Name = "Good"}.Fire();
-            new Test2Event().Fire();
+            new StartupSystemsInitializedEvent().Fire();
         }
 
         private void OnApplicationQuit()

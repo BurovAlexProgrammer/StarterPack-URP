@@ -5,7 +5,7 @@ namespace _Project.Scripts.Main.AppServices
     public static class Old_Services
     {
         public static Old_ScreenService OldScreenService { get; private set; }
-        public static SceneLoaderService SceneLoaderService { get; private set; }
+        public static Old_SceneLoaderService SceneLoaderService { get; private set; }
         public static GameManagerService GameManagerService { get; private set; }
         public static LocalizationService LocalizationService { get; private set; }
         public static Old_DebugService DebugService { get; private set; }
@@ -21,7 +21,7 @@ namespace _Project.Scripts.Main.AppServices
                 case Old_ScreenService service:
                     OldScreenService = service;
                     break;
-                case SceneLoaderService service:
+                case Old_SceneLoaderService service:
                     SceneLoaderService = service;
                     break;
                 case GameManagerService service:
@@ -62,7 +62,7 @@ namespace _Project.Scripts.Main.AppServices
                 case AppServices.Old_ScreenService:
                     OldScreenService = null;
                     break;
-                case AppServices.SceneLoaderService:
+                case AppServices.Old_SceneLoaderService:
                     SceneLoaderService = null;
                     break;
                 case AppServices.GameManagerService:

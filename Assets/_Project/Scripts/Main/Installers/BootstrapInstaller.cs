@@ -14,7 +14,7 @@ namespace _Project.Scripts.Main.Installers
 {
     public class BootstrapInstaller : MonoInstaller
     {
-        [SerializeField] private SceneLoaderService _sceneLoaderServicePrefab;
+        [SerializeField] private Old_SceneLoaderService _sceneLoaderServicePrefab;
         [SerializeField] private Old_ScreenService _screenServicePrefab;
         [SerializeField] private SettingsService _settingsServicePrefab;
         [SerializeField] private GameManagerService _gameManagerServicePrefab;
@@ -118,11 +118,11 @@ namespace _Project.Scripts.Main.Installers
         private void InstallSceneLoaderService()
         {
            Container
-                .Bind<SceneLoaderService>()
+                .Bind<Old_SceneLoaderService>()
                 .FromComponentInNewPrefab(_sceneLoaderServicePrefab)
                 .WithGameObjectName("Scene Loader")
                 .AsSingle()
-                .OnInstantiated((ctx, instance) => SetService((SceneLoaderService)instance))
+                .OnInstantiated((ctx, instance) => SetService((Old_SceneLoaderService)instance))
                 .NonLazy();
         }
 

@@ -3,7 +3,7 @@ using _Project.Scripts.Main.AppServices;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
-using SceneName = _Project.Scripts.Main.AppServices.SceneLoaderService.Scenes;
+using SceneName = _Project.Scripts.Main.AppServices.Old_SceneLoaderService.Scenes;
 
 namespace _Project.Scripts.Main.Game.GameState
 {
@@ -13,7 +13,7 @@ namespace _Project.Scripts.Main.Game.GameState
 
         private GameState _activeState;
 
-        [Inject] private SceneLoaderService _sceneLoader;
+        [Inject] private Old_SceneLoaderService _sceneLoader;
 
         public GameState ActiveState => _activeState;
 

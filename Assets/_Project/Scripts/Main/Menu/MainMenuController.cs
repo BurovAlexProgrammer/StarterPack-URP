@@ -7,7 +7,7 @@ namespace _Project.Scripts.Main.Menu
 {
     public class MainMenuController : MenuController
     {
-        [Inject] private SceneLoaderService _sceneLoader;
+        [Inject] private Old_SceneLoaderService _sceneLoader;
         [Inject] private GameManagerService _gameManager;
         
         private void Start()

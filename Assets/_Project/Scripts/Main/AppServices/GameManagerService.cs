@@ -18,7 +18,7 @@ namespace _Project.Scripts.Main.AppServices
         [SerializeField, ReadOnlyField] private int _scores;
 
         [Inject] private Old_ControlService _controlService;
-        [Inject] private SceneLoaderService _sceneLoader;
+        [Inject] private Old_SceneLoaderService _sceneLoader;
         [Inject] private StatisticService _statisticService;
 
         public event Action<bool> SwitchPause;
