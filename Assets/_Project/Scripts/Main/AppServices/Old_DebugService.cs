@@ -4,17 +4,17 @@ using UnityEngine;
 
 namespace _Project.Scripts.Main.AppServices
 {
-    public class DebugService : Old_BaseService
+    public class Old_DebugService : Old_BaseService
     {
-        [SerializeField] private DebugServiceConfig _serviceConfig;
+        // [SerializeField] private DebugServiceConfig _serviceConfig;
         [SerializeField] private GizmoItem _explosionGizmoPrefab;
         [SerializeField] private Transform _gizmosContainer;
 
-        public bool SaveLogToFile => _serviceConfig.SaveLogToFile;
+        public bool SaveLogToFile => false;// _serviceConfig.SaveLogToFile;
         
         public void CreateExplosionGizmo(Transform targetTransform, float radius)
         {
-            if (_serviceConfig.ShowExplosionSphere == false) return;
+            // if (_serviceConfig.ShowExplosionSphere == false) return;
             
             var gizmoInstance = Instantiate(_explosionGizmoPrefab, _gizmosContainer);
             gizmoInstance.transform.position = targetTransform.position;

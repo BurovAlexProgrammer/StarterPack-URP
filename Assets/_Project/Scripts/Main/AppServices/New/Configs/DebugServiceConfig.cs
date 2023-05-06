@@ -6,6 +6,5 @@ namespace _Project.Scripts.Main.AppServices
     public class DebugServiceConfig : ScriptableObject
     {
         public bool SaveLogToFile;
-        public bool ShowExplosionSphere;
     }
 }

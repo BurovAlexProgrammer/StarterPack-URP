@@ -8,7 +8,7 @@ namespace _Project.Scripts.Main.AppServices
         public static SceneLoaderService SceneLoaderService { get; private set; }
         public static GameManagerService GameManagerService { get; private set; }
         public static LocalizationService LocalizationService { get; private set; }
-        public static DebugService DebugService { get; private set; }
+        public static Old_DebugService DebugService { get; private set; }
         public static PoolService PoolService { get; private set; }
         public static AudioService AudioService { get; private set; }
         public static StatisticService StatisticService { get; private set; }
@@ -31,7 +31,7 @@ namespace _Project.Scripts.Main.AppServices
                 case LocalizationService service:
                     LocalizationService = service;
                     break;
-                case DebugService service:
+                case Old_DebugService service:
                     DebugService = service;
                     break;
                 case PoolService service:
@@ -71,7 +71,7 @@ namespace _Project.Scripts.Main.AppServices
                 case AppServices.LocalizationService:
                     LocalizationService = null;
                     break;
-                case AppServices.DebugService:
+                case AppServices.Old_DebugService:
                     DebugService = null;
                     break;
                 case AppServices.PoolService:

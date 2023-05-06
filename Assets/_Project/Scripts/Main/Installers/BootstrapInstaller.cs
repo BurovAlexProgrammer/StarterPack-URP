@@ -20,7 +20,7 @@ namespace _Project.Scripts.Main.Installers
         [SerializeField] private GameManagerService _gameManagerServicePrefab;
         [SerializeField] private LocalizationService _localizationServicePrefab;
         [SerializeField] private Old_ControlService _controlServicePrefab;
-        [SerializeField] private DebugService _debugServicePrefab;
+        [SerializeField] private Old_DebugService _debugServicePrefab;
         [SerializeField] private AudioService _audioServicePrefab;
         [SerializeField] private StatisticService _statisticServicePrefab;
 
@@ -37,17 +37,7 @@ namespace _Project.Scripts.Main.Installers
             InstallControlService();
             InstallDebugService();
             InstallStatisticService();
-            
-            if (_debugServicePrefab.SaveLogToFile)
-            {
-                Application.logMessageReceived += LogToFile;
-            }
 
-            
-            SystemsService.Bind<TestSystem>();
-            
-            new TestEvent(){Name = "Good"}.Fire();
-            new Test2Event().Fire();
         }
 
         private void OnApplicationQuit()
@@ -80,22 +70,12 @@ namespace _Project.Scripts.Main.Installers
         private void InstallDebugService()
         {
             Container
-                .Bind<DebugService>()
+                .Bind<Old_DebugService>()
                 .FromComponentInNewPrefab(_debugServicePrefab)
                 .WithGameObjectName("Debug Service")
                 .AsSingle()
-                .OnInstantiated((ctx, instance) => SetService((DebugService)instance))
+                .OnInstantiated((ctx, instance) => SetService((Old_DebugService)instance))
                 .NonLazy();
-        }
-
-        private void LogToFile(string condition, string stacktrace, LogType type)
-        {
-            var path = Application.persistentDataPath + "/log.txt";
-            using var streamWriter = File.AppendText(path);
-            streamWriter.WriteLine($"{condition}");
-            streamWriter.WriteLine("----");
-            streamWriter.WriteLine($"{stacktrace}");
-            streamWriter.WriteLine("-----------------------------------------------------------------------------------------");
         }
 
         private void InstallControlService()
