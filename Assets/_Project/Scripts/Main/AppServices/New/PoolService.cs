@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
-using _Project.Scripts.Main.Game;
+﻿using System;
+using System.Collections.Generic;
 using _Project.Scripts.Main.Wrappers;
 using UnityEngine;
+using AppContext = _Project.Scripts.Main.Game.AppContext;
 
 namespace _Project.Scripts.Main.AppServices
 {
     public class PoolService : IService, IConstruct
     {
         private Dictionary<object, Pool> _poolDictionary = new Dictionary<object, Pool>();
+        private Dictionary<UInt64, PoolItem> _itemsDictionary = new Dictionary<UInt64, PoolItem>();
         private Transform _itemsContainer;
 
         public void Init()
@@ -15,7 +17,7 @@ namespace _Project.Scripts.Main.AppServices
             _poolDictionary = new Dictionary<object, Pool>();
         }
 
-        public object GetAndActivate(object prefab)
+        public PoolItem GetAndActivate(object prefab)
         {
             var poolItem = Get(prefab);
             poolItem.GameObject?.SetActive(true);
@@ -78,6 +80,20 @@ namespace _Project.Scripts.Main.AppServices
             var poolService = new GameObject() { name = "Pool Service"};
             poolService.transform.SetParent(AppContext.ServicesHierarchy);
             _itemsContainer = poolService.transform;
+        }
+
+        public void ReturnItem(UInt64 id)
+        {
+            foreach (var (key, pool) in _poolDictionary)
+            {
+                if (pool.ItemsDictionary.TryGetValue(id, out var poolItem))
+                {
+                    poolItem.ReturnToPool();
+                    return;
+                }
+            }
+
+            throw new Exception($"Pool item with id:\"{id}\" not found.");
         }
     }
 }

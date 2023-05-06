@@ -3,7 +3,6 @@ using _Project.Scripts.Main.Game;
 using _Project.Scripts.Main.Systems;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace _Project.Scripts.Main.Installers
 {
@@ -20,8 +19,7 @@ namespace _Project.Scripts.Main.Installers
             DOTween.SetTweensCapacity(1000, 50);
             Services.Register<ControlService>(_controlServiceInstaller);
             Services.Register<ScreenService>(_screenServiceInstaller);
-            
-            var t = Services.Get<ScreenService>();
+            Services.Register<PoolService>();
             
             SystemsService.Bind<ControlSystem>();
             SystemsService.Bind<ScreenSystem>();

@@ -13,7 +13,7 @@ namespace _Project.Scripts.Main.Wrappers
 
         public readonly object Object;
         public readonly Type Type;
-        public Action<PoolItem> Returned;
+        public Action<PoolItem> OnReturn;
         
         private UInt64 _id = 0;
         private int _index = -1;
@@ -54,19 +54,35 @@ namespace _Project.Scripts.Main.Wrappers
         {
             Object = obj;
             Type = obj.GetType();
+            
             if (obj is GameObject)
             {
                 _gameObject = obj as GameObject;
-                _gameObject.name = _gameObject.CleanName() + " " + index;
             }
 
             if (obj is MonoBehaviour monoBehaviour)
             {
                 _gameObject = monoBehaviour.gameObject;
             }
+
+            if (_gameObject != null)
+            {
+                _gameObject.name = _gameObject.CleanName() + " " + index;
+                _gameObject.SetActive(false);
+            }
             
             _id = NewId;
             _index = index;
+        }
+
+        public void Destroy()
+        {
+            OnReturn = null;
+            
+            if (GameObject != null && _destroyCancellationToken.IsCancellationRequested == false)
+            {
+                UnityEngine.Object.DestroyImmediate(GameObject);
+            }
         }
 
         public void SetName(string nameTemplate)
@@ -81,7 +97,7 @@ namespace _Project.Scripts.Main.Wrappers
             if (_destroyCancellationToken.IsCancellationRequested) return;
             
             GameObject.SetActive(false);
-            Returned?.Invoke(this);
+            OnReturn?.Invoke(this);
         }
     }
 }

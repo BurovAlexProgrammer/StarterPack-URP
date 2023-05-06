@@ -8,13 +8,14 @@ namespace _Project.Scripts.Main.Wrappers
     [Serializable]
     public class Pool
     {
+        public Dictionary<UInt64, PoolItem> ItemsDictionary = new Dictionary<ulong, PoolItem>();
+        
         private object _originRef;
         private int _initCapacity;
         private int _maxCapacity;
         private int _instanceCount;
         private Transform _container;
         private OverAllocationBehaviour _overAllocationBehaviour;
-
         private Queue<PoolItem> _inactivePool;
         private List<PoolItem> _activePool;
 
@@ -63,9 +64,8 @@ namespace _Project.Scripts.Main.Wrappers
             {
                 foreach (var item in _inactivePool.ToArray())
                 {
-                    if (item.GameObject == null) continue;
-
-                    Object.DestroyImmediate(item.GameObject.gameObject);
+                    ItemsDictionary.Remove(item.Id);
+                    item.Destroy();
                 }
             }
 
@@ -73,9 +73,8 @@ namespace _Project.Scripts.Main.Wrappers
             {
                 foreach (var item in _activePool.ToArray())
                 {
-                    if (item.GameObject == null) continue;
-
-                    Object.DestroyImmediate(item.GameObject.gameObject);
+                    ItemsDictionary.Remove(item.Id);
+                    item.Destroy();
                 }
             }
             
@@ -135,7 +134,9 @@ namespace _Project.Scripts.Main.Wrappers
             }
             
             var newItem = new PoolItem(newInstance, nextIndex);
+            newItem.OnReturn += OnItemReturn;
             _inactivePool.Enqueue(newItem);
+            ItemsDictionary.Add(newItem.Id, newItem);
             _instanceCount++;
         }
 
