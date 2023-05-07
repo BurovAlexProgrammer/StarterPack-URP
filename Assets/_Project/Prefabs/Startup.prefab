@@ -50,3 +50,7 @@ MonoBehaviour:
     type: 3}
   _debugServiceInstaller: {fileID: 2013064537276830682, guid: 3a085f93678f3cf4392e1fdbd1158fbf,
     type: 3}
+  _settingsServiceInstaller: {fileID: 866580520641488903, guid: 4056d19f95fa68b468c574a10f7f0969,
+    type: 3}
+  _audioServiceInstaller: {fileID: 607220006520317084, guid: 8b6f6214da8ced64b87b305addfa7249,
+    type: 3}

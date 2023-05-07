@@ -1,8 +1,10 @@
 ﻿using System;
 using _Project.Scripts.Extension;
+using _Project.Scripts.Main.Settings;
 using _Project.Scripts.Main.Wrappers;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.Main.AppServices
@@ -91,6 +93,20 @@ namespace _Project.Scripts.Main.AppServices
         public void SetCameraToCanvas(Canvas canvas, CameraType cameraType)
         {
             canvas.worldCamera = cameraType == CameraType.MainCamera ? _cameraMain : _cameraUI;
+        }
+
+        public void ApplySettings(VideoSettings videoSettings)
+        {
+            SetProfileVolume(typeof(Bloom), videoSettings.PostProcessBloom);
+            SetProfileVolume(typeof(DepthOfField), videoSettings.PostProcessDepthOfField);
+            SetProfileVolume(typeof(Vignette), videoSettings.PostProcessVignette);
+            SetProfileVolume(typeof(FilmGrain), videoSettings.PostProcessFilmGrain);
+            SetProfileVolume(typeof(MotionBlur), videoSettings.PostProcessMotionBlur);
+            SetProfileVolume(typeof(LensDistortion), videoSettings.PostProcessLensDistortion);
+            var additionalCameraSettings = _cameraMain.GetComponent<UniversalAdditionalCameraData>();
+            additionalCameraSettings.antialiasing = videoSettings.PostProcessAntiAliasing ? AntialiasingMode.FastApproximateAntialiasing : AntialiasingMode.None;
+            //var t1 = GraphicsSettings.GetGraphicsSettings();
+            //GraphicsSettings.GetSettingsForRenderPipeline<>()
         }
     }
 }

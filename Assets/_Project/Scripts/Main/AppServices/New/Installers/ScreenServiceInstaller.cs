@@ -1,12 +1,10 @@
-﻿using _Project.Scripts.Extension;
-using _Project.Scripts.Main.Game;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.Main.AppServices
 {
-    public class ScreenServiceInstaller : MonoBehaviour, IServiceInstaller
+    public class ScreenServiceInstaller : BaseServiceInstaller
     {
         public Camera CameraMain;
         public Camera CameraUI;
@@ -16,12 +14,5 @@ namespace _Project.Scripts.Main.AppServices
         public Image CameraTopFrame;
         public bool ShowProfilerOnStartup;
         public Transform CameraHolder;
-
-        public IServiceInstaller Install()
-        {
-            var installer = Instantiate(this, AppContext.ServicesHierarchy);
-            installer.gameObject.CleanName();
-            return installer;
-        }
     }
 }

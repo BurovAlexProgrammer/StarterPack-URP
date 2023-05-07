@@ -651,12 +651,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -1272852586313317906, guid: c3217b61733167c499178907a758f927,
         type: 3}
-    - target: {fileID: 863953413682548771, guid: 9844284097a45db488741aaf35acedcc,
-        type: 3}
-      propertyPath: _settingsServiceInstaller
-      value: 
-      objectReference: {fileID: 866580520641488903, guid: 4056d19f95fa68b468c574a10f7f0969,
-        type: 3}
     - target: {fileID: 863953413682548772, guid: 9844284097a45db488741aaf35acedcc,
         type: 3}
       propertyPath: m_Name

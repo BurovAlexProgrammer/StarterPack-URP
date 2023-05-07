@@ -1,4 +1,5 @@
 using _Project.Scripts.Main.AppServices;
+using _Project.Scripts.Main.Game.GameState;
 using UnityEngine;
 using Zenject;
 
@@ -14,7 +15,10 @@ namespace _Project.Scripts.Main.Settings
 
             public override void ApplySettings(SettingsService settingsService)
             {
-                // settingsService.AudioService.Setup(settingsService);
+                //if (GameStateMachine.currState = menu)
+                {
+                    Services.Get<AudioService>().PlayMusic(AudioService.MusicPlayerState.MainMenu);
+                }
             }
         }
         
