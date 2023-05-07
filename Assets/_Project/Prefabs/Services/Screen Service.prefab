@@ -296,7 +296,8 @@ MonoBehaviour:
   CameraMain: {fileID: 7465470406422069858}
   CameraUI: {fileID: 8310842251116530918}
   Volume: {fileID: 1334056055456013422}
-  InternalProfiler: {fileID: 4525918694948487683}
+  InternalProfilerManager: {fileID: 394764085355896457}
+  InternalProfilerPanels: {fileID: 4525918694948487683}
   InternalProfilerToggle: {fileID: 3027022478318800228}
   CameraTopFrame: {fileID: 1843110620652957208}
   ShowProfilerOnStartup: 1
@@ -647,6 +648,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: '[Graphy]'
       objectReference: {fileID: 0}
+    - target: {fileID: 11496292, guid: 0abab5bb77339e4428787a870eb31bd3, type: 3}
+      propertyPath: m_findAudioListenerInCameraIfNull
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 22323726, guid: 0abab5bb77339e4428787a870eb31bd3, type: 3}
       propertyPath: m_Camera
       value: 
@@ -867,6 +872,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 394764085345334765}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &394764085355896457 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 11496292, guid: 0abab5bb77339e4428787a870eb31bd3,
+    type: 3}
+  m_PrefabInstance: {fileID: 394764085345334765}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c80e6d63202cef44ca3ffdaccec693be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3027022478318800228 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3420588645173147785, guid: 0abab5bb77339e4428787a870eb31bd3,

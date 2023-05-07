@@ -2,6 +2,7 @@
 using _Project.Scripts.Extension;
 using _Project.Scripts.Main.Settings;
 using _Project.Scripts.Main.Wrappers;
+using Tayx.Graphy;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -18,6 +19,7 @@ namespace _Project.Scripts.Main.AppServices
         private Volume _volume;
         private VolumeProfile _volumeProfile;
         private GameObject _internalProfiler;
+        private GraphyManager _internalProfilerManager;
         private Toggle _internalProfilerToggle;
         private Transform _cameraHolder;
 
@@ -38,11 +40,12 @@ namespace _Project.Scripts.Main.AppServices
         public void Construct(IServiceInstaller installer)
         {
             var screenServiceInstaller = installer.Install() as ScreenServiceInstaller;
-            _internalProfiler = screenServiceInstaller.InternalProfiler;
+            _internalProfiler = screenServiceInstaller.InternalProfilerPanels;
             _cameraMain = screenServiceInstaller.CameraMain;
             _cameraUI = screenServiceInstaller.CameraUI;
             _volume = screenServiceInstaller.Volume;
             _volumeProfile = _volume.profile;
+            _internalProfilerManager = screenServiceInstaller.InternalProfilerManager;
             _internalProfilerToggle = screenServiceInstaller.InternalProfilerToggle;
             _internalProfiler.SetActive(screenServiceInstaller.ShowProfilerOnStartup);
             _cameraHolder = screenServiceInstaller.CameraHolder;
@@ -61,7 +64,7 @@ namespace _Project.Scripts.Main.AppServices
             _internalProfilerToggle.onValueChanged.RemoveListener(OnProfilerToggleSwitched);
         }
         
-        public void SetProfileVolume(Type type, bool state)
+        public void SetVolumeProfile(Type type, bool state)
         {
             if (_volumeProfile.TryGet(type, out VolumeComponent volumeComponent))
             {
@@ -97,16 +100,26 @@ namespace _Project.Scripts.Main.AppServices
 
         public void ApplySettings(VideoSettings videoSettings)
         {
-            SetProfileVolume(typeof(Bloom), videoSettings.PostProcessBloom);
-            SetProfileVolume(typeof(DepthOfField), videoSettings.PostProcessDepthOfField);
-            SetProfileVolume(typeof(Vignette), videoSettings.PostProcessVignette);
-            SetProfileVolume(typeof(FilmGrain), videoSettings.PostProcessFilmGrain);
-            SetProfileVolume(typeof(MotionBlur), videoSettings.PostProcessMotionBlur);
-            SetProfileVolume(typeof(LensDistortion), videoSettings.PostProcessLensDistortion);
+            SetVolumeProfile(typeof(Bloom), videoSettings.PostProcessBloom);
+            SetVolumeProfile(typeof(DepthOfField), videoSettings.PostProcessDepthOfField);
+            SetVolumeProfile(typeof(Vignette), videoSettings.PostProcessVignette);
+            SetVolumeProfile(typeof(FilmGrain), videoSettings.PostProcessFilmGrain);
+            SetVolumeProfile(typeof(MotionBlur), videoSettings.PostProcessMotionBlur);
+            SetVolumeProfile(typeof(LensDistortion), videoSettings.PostProcessLensDistortion);
             var additionalCameraSettings = _cameraMain.GetComponent<UniversalAdditionalCameraData>();
             additionalCameraSettings.antialiasing = videoSettings.PostProcessAntiAliasing ? AntialiasingMode.FastApproximateAntialiasing : AntialiasingMode.None;
             //var t1 = GraphicsSettings.GetGraphicsSettings();
             //GraphicsSettings.GetSettingsForRenderPipeline<>()
+        }
+
+        public void SetupInternalProfiler(AudioListener audioListener)
+        {
+            _internalProfilerManager.AudioListener = audioListener;
+        }
+        
+        public void SetAudioListenerToCamera(AudioListener audioListener)
+        {
+           audioListener.transform.SetParent(_cameraMain.transform);
         }
     }
 }

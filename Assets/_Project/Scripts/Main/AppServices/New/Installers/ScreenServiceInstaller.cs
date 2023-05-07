@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Tayx.Graphy;
+using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
@@ -9,7 +10,8 @@ namespace _Project.Scripts.Main.AppServices
         public Camera CameraMain;
         public Camera CameraUI;
         public Volume Volume;
-        public GameObject InternalProfiler;
+        public GraphyManager InternalProfilerManager;
+        public GameObject InternalProfilerPanels;
         public Toggle InternalProfilerToggle;
         public Image CameraTopFrame;
         public bool ShowProfilerOnStartup;

@@ -1,4 +1,5 @@
-﻿using _Project.Scripts.Main.AppServices;
+﻿using System.Collections;
+using _Project.Scripts.Main.AppServices;
 using _Project.Scripts.Main.DTO;
 using _Project.Scripts.Main.Events;
 using _Project.Scripts.Main.Game;
@@ -34,15 +35,24 @@ namespace _Project.Scripts.Main.Installers
             SystemsService.Bind<ControlSystem>();
             SystemsService.Bind<ScreenSystem>();
             SystemsService.Bind<SceneLoaderSystem>();
+            SystemsService.Bind<DebugSystem>();
+            SystemsService.Bind<AudioSystem>();
             
-            Services.Get<StatisticService>().AddValueToRecord(StatisticData.RecordName.Movement, 10f);
+            //Services.Get<StatisticService>().AddValueToRecord(StatisticData.RecordName.Movement, 10f);
             new StartupSystemsInitializedEvent().Fire();
+            StartCoroutine(LateStartup());
         }
 
         private void OnApplicationQuit()
         {
             Services.Dispose();
             SystemsService.Dispose();
+        }
+        
+        private IEnumerator LateStartup()
+        {
+            yield return null;
+            new StartupSystemsLateInitEvent().Fire();
         }
     }
 }

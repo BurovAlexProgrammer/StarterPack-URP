@@ -11,6 +11,7 @@ namespace _Project.Scripts.Main.Systems
         {
             base.Init();
             _audioService = Services.Get<AudioService>();
+            new AudioSystemInitializedEvent().Fire();
         }
 
         public override void AddEventHandlers()

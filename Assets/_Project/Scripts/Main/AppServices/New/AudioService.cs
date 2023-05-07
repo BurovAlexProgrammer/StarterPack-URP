@@ -18,7 +18,11 @@ namespace _Project.Scripts.Main.AppServices
         private AudioClip[] _menuPlaylist;
 
         private MusicPlayerState _currentState;
+        
+        public enum MusicPlayerState {None, MainMenu, Battle}
 
+        public AudioListener AudioListener => _audioListener;
+        
         public void Construct(IServiceInstaller installer)
         {
             _serviceInstaller = installer.Install() as AudioServiceInstaller;
@@ -100,7 +104,5 @@ namespace _Project.Scripts.Main.AppServices
         {
             _currentState = MusicPlayerState.None;
         }
-
-        public enum MusicPlayerState {None, MainMenu, Battle}
     }
 }
