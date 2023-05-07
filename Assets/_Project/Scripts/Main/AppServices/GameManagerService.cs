@@ -19,7 +19,7 @@ namespace _Project.Scripts.Main.AppServices
 
         [Inject] private Old_ControlService _controlService;
         [Inject] private Old_SceneLoaderService _sceneLoader;
-        [Inject] private StatisticService _statisticService;
+        [Inject] private Old_StatisticService _statisticService;
 
         public event Action<bool> SwitchPause;
         public event Action GameOver;

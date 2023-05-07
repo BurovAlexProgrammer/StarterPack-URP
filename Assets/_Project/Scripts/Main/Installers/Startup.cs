@@ -1,4 +1,5 @@
 ﻿using _Project.Scripts.Main.AppServices;
+using _Project.Scripts.Main.DTO;
 using _Project.Scripts.Main.Events;
 using _Project.Scripts.Main.Game;
 using _Project.Scripts.Main.Systems;
@@ -24,11 +25,13 @@ namespace _Project.Scripts.Main.Installers
             Services.Register<PoolService>();
             Services.Register<DebugService>(_debugServiceInstaller);
             Services.Register<SceneLoaderService>();
+            Services.Register<StatisticService>();
             
             SystemsService.Bind<ControlSystem>();
             SystemsService.Bind<ScreenSystem>();
             SystemsService.Bind<SceneLoaderSystem>();
             
+            Services.Get<StatisticService>().AddValueToRecord(StatisticData.RecordName.Movement, 10f);
             new StartupSystemsInitializedEvent().Fire();
         }
 

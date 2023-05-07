@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using static _Project.Scripts.Extension.Common;
 using static _Project.Scripts.Main.AppServices.Old_Services;
-using static _Project.Scripts.Main.StatisticData;
+using static _Project.Scripts.Main.DTO.StatisticData;
 using Button = UnityEngine.UI.Button;
 
 namespace _Project.Scripts.Main.Menu

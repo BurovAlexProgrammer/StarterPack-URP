@@ -1,31 +1,33 @@
 ﻿using System;
 using System.IO;
-using _Project.Scripts.Main.Game.GameState;
+using _Project.Scripts.Main.DTO;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
-using Zenject;
-using static _Project.Scripts.Main.StatisticData;
+using static _Project.Scripts.Main.DTO.StatisticData;
 
 namespace _Project.Scripts.Main.AppServices
 {
-    public class StatisticService : Old_BaseService
+    public class StatisticService : IService, IConstruct
     {
         public Action<RecordName, string> RecordChanged; 
         
         private StatisticData _statisticData;
         private string _storedFolder;
         private string _storedFolderPath;
-        
-        [Inject] private GameManagerService _gameManager;
 
-        public void Init()
+        public void Construct()
         {
             _statisticData = new StatisticData();
             _storedFolder ??= Application.dataPath + "/StoredData/";
             _storedFolderPath = _storedFolder + "Statistic.data";
             LoadFromFile();
             TimerExecuting();
+        }
+
+        ~StatisticService()
+        {
+            SaveToFile();
         }
 
         public string GetRecord(RecordName recordName)
@@ -135,7 +137,7 @@ namespace _Project.Scripts.Main.AppServices
 
                 if (delta < 1f) continue;
 
-                if (_gameManager.ActiveStateEquals<GameStates.PlayNewGame>())
+                // if (_gameManager.ActiveStateEquals<GameStates.PlayNewGame>())
                 {
                     AddValueToRecord(RecordName.LastGameSessionDuration, delta);
                 }

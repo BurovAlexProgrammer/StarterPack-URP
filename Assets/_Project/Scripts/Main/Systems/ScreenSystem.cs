@@ -1,6 +1,5 @@
 ﻿using _Project.Scripts.Main.AppServices;
 using _Project.Scripts.Main.Events;
-using ModestTree;
 
 namespace _Project.Scripts.Main.Systems
 {
@@ -29,7 +28,6 @@ namespace _Project.Scripts.Main.Systems
         public override void OnDispose()
         {
             base.OnDispose();
-            Log.Info("OnDispose");
             ScreenService.InternalProfilerToggle.onValueChanged.RemoveAllListeners();
         }
 

@@ -9,8 +9,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 using static _Project.Scripts.Extension.Common;
-using static _Project.Scripts.Main.StatisticData.FormatType;
-using static _Project.Scripts.Main.StatisticData.RecordName;
+using static _Project.Scripts.Main.DTO.StatisticData.FormatType;
+using static _Project.Scripts.Main.DTO.StatisticData.RecordName;
 
 namespace _Project.Scripts.Main.UI.Window
 {
@@ -25,7 +25,7 @@ namespace _Project.Scripts.Main.UI.Window
         [SerializeField] private DialogView _quitGameDialog;
 
         [Inject] private GameManagerService _gameManager;
-        [Inject] private StatisticService _statisticService;
+        [Inject] private Old_StatisticService _statisticService;
 
         public event Action Opened;
         public event Action Closed;

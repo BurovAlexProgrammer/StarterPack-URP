@@ -22,7 +22,7 @@ namespace _Project.Scripts.Main.Installers
         [SerializeField] private Old_ControlService _controlServicePrefab;
         [SerializeField] private Old_DebugService _debugServicePrefab;
         [SerializeField] private AudioService _audioServicePrefab;
-        [SerializeField] private StatisticService _statisticServicePrefab;
+        [SerializeField] private Old_StatisticService _statisticServicePrefab;
 
         public override void InstallBindings()
         {
@@ -48,11 +48,11 @@ namespace _Project.Scripts.Main.Installers
         private void InstallStatisticService()
         {
             Container
-                .Bind<StatisticService>()
+                .Bind<Old_StatisticService>()
                 .FromComponentInNewPrefab(_statisticServicePrefab)
                 .WithGameObjectName("Statistic Service")
                 .AsSingle()
-                .OnInstantiated((ctx, instance) => SetService((StatisticService)instance))
+                .OnInstantiated((ctx, instance) => SetService((Old_StatisticService)instance))
                 .NonLazy();
         }
 
