@@ -1,19 +1,18 @@
 using System.Collections.Generic;
 using _Project.Scripts.Main.Settings;
 using UnityEngine;
-using Zenject;
 using AudioSettings = _Project.Scripts.Main.Settings.AudioSettings;
 
 namespace _Project.Scripts.Main.AppServices
 {
-    public class SettingsService : Old_BaseService
+    public class SettingsService : IService, IConstruct
     {
         [SerializeField] private SettingGroup<VideoSettings> _videoSettings;
         [SerializeField] private SettingGroup<AudioSettings> _audioSettings;
         [SerializeField] private SettingGroup<GameSettings> _gameSettings;
 
-        [Inject] private AudioService _audioService;
-        [Inject] private Old_ScreenService _oldScreenService;
+        // [Inject] private AudioService _audioService;
+        private ScreenService _oldScreenService;
         
         
         private List<ISettingGroup> _settingList;
@@ -22,10 +21,10 @@ namespace _Project.Scripts.Main.AppServices
         public AudioSettings Audio => _audioSettings.CurrentSettings;
         public GameSettings GameSettings => _gameSettings.CurrentSettings;
 
-        public AudioService AudioService => _audioService;
-        public Old_ScreenService OldScreenService => _oldScreenService;
+        // public AudioService AudioService => _audioService;
+        // public Old_ScreenService OldScreenService => _oldScreenService;
 
-        public void Init()
+        public void Construct()
         {
             _settingList = new List<ISettingGroup>
             {

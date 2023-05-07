@@ -14,7 +14,7 @@ namespace _Project.Scripts.Main.Settings
 
             public override void ApplySettings(SettingsService settingsService)
             {
-                settingsService.AudioService.Setup(settingsService);
+                // settingsService.AudioService.Setup(settingsService);
             }
         }
         

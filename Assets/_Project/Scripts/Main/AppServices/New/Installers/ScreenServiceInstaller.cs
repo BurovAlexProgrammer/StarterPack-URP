@@ -15,7 +15,8 @@ namespace _Project.Scripts.Main.AppServices
         public Toggle InternalProfilerToggle;
         public Image CameraTopFrame;
         public bool ShowProfilerOnStartup;
-        
+        public Transform CameraHolder;
+
         public IServiceInstaller Install()
         {
             var installer = Instantiate(this, AppContext.ServicesHierarchy);

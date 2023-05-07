@@ -2,8 +2,6 @@ using System;
 using _Project.Scripts.Main.AppServices;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Zenject;
-using SceneName = _Project.Scripts.Main.AppServices.Old_SceneLoaderService.Scenes;
 
 namespace _Project.Scripts.Main.Game.GameState
 {
@@ -13,13 +11,14 @@ namespace _Project.Scripts.Main.Game.GameState
 
         private GameState _activeState;
 
-        [Inject] private Old_SceneLoaderService _sceneLoader;
+        private SceneLoaderService _sceneLoader;
 
         public GameState ActiveState => _activeState;
 
         public async UniTaskVoid Init()
         {
-            if (_sceneLoader.InitialSceneEquals(SceneName.Boot))
+            _sceneLoader = Services.Get<SceneLoaderService>();
+            // if (_sceneLoader.InitialSceneEquals(SceneName.Boot))
             {
                 await SetState(new GameStates.Bootstrap());
                 await SetState(new GameStates.MainMenu());

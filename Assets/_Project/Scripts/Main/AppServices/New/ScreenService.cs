@@ -12,6 +12,7 @@ namespace _Project.Scripts.Main.AppServices
         public Volume Volume;
         public GameObject InternalProfiler;
         public Toggle InternalProfilerToggle;
+        public Transform CameraHolder;
         
         public void ToggleDisplayProfiler()
         {
@@ -30,6 +31,7 @@ namespace _Project.Scripts.Main.AppServices
             Volume = screenServiceInstaller.Volume;
             InternalProfilerToggle = screenServiceInstaller.InternalProfilerToggle;
             InternalProfiler.SetActive(screenServiceInstaller.ShowProfilerOnStartup);
+            CameraHolder = screenServiceInstaller.CameraHolder;
         }
     }
 }

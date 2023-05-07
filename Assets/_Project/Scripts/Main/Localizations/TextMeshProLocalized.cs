@@ -22,7 +22,7 @@ namespace _Project.Scripts.Main.Localizations
                 _textMesh.text = "---NO KEY---";
                 return;
             }
-            _textMesh.text = _localization.GetLocalizedText(_localizedTextKey);
+            // _textMesh.text = _localization.GetLocalizedText(_localizedTextKey);
         }
     }
 }

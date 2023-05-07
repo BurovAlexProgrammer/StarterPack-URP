@@ -20,11 +20,12 @@ namespace _Project.Scripts.Main.UI.Window
         [SerializeField] private DialogView _quitGameDialog;
 
         [Inject] private GameManagerService _gameManager;
-        [Inject] private SettingsService _settingsService;
-        [Inject] private Old_ControlService _controlService;
+        // private SettingsService _settingsService;
+        private ControlService _controlService;
 
         private void Awake()
         {
+            _controlService = Services.Get<ControlService>();
             _controlService.Controls.Menu.Pause.BindAction(BindActions.Started, ReturnGame);
             _restartGameButton.onClick.AddListener(RestartGame);
             _returnGameButton.onClick.AddListener(ReturnGame);
@@ -40,8 +41,8 @@ namespace _Project.Scripts.Main.UI.Window
         
         private void Start()
         {
-            _musicToggle.isOn = _settingsService.Audio.MusicEnabled;
-            _soundsToggle.isOn = _settingsService.Audio.SoundEnabled;
+            // _musicToggle.isOn = _settingsService.Audio.MusicEnabled;
+            // _soundsToggle.isOn = _settingsService.Audio.SoundEnabled;
         }
 
         private void OnDestroy()
@@ -88,14 +89,14 @@ namespace _Project.Scripts.Main.UI.Window
 
         private void OnMusicSwitch(bool newValue)
         {
-            _settingsService.Audio.MusicEnabled = newValue;
-            _settingsService.Save();
+            // _settingsService.Audio.MusicEnabled = newValue;
+            // _settingsService.Save();
         }
     
         private void OnSoundsSwitch(bool newValue)
         {
-            _settingsService.Audio.SoundEnabled = newValue;
-            _settingsService.Save();
+            // _settingsService.Audio.SoundEnabled = newValue;
+            // _settingsService.Save();
         }
     
         private void ShowQuitGameDialog()

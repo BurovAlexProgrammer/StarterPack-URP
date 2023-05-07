@@ -7,11 +7,11 @@ namespace _Project.Scripts.Main.Localizations
 {
     public abstract class LocalizedTextComponent : MonoBehaviour
     {
-        [Inject] protected LocalizationService _localization;
+        // protected LocalizationService _localization;
 
         private async void Start()
         {
-            while (!_localization.IsLoaded)
+            // while (!_localization.IsLoaded)
             {
                 await UniTask.NextFrame();
             }

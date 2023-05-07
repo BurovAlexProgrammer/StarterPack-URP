@@ -1,6 +1,5 @@
 ﻿using _Project.Scripts.Extension;
 using Cysharp.Threading.Tasks;
-using static _Project.Scripts.Main.AppServices.Old_Services;
 
 namespace _Project.Scripts.Main.Game.GameState
 {
@@ -10,7 +9,7 @@ namespace _Project.Scripts.Main.Game.GameState
         {
             public override async UniTask EnterState()
             {
-                SceneLoaderService.ShowScene();
+                //Services.Get<SceneLoaderService>().ShowScene();
                 await 3f.WaitInSeconds();
             }
         }

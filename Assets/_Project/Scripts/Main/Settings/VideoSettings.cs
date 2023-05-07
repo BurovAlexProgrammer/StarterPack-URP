@@ -24,7 +24,7 @@ namespace _Project.Scripts.Main.Settings
 
         public override void ApplySettings(SettingsService settingsService)
         {
-            _volumeProfile = settingsService.OldScreenService.VolumeProfile;
+            // _volumeProfile = settingsService.OldScreenService.VolumeProfile;
             SetVolumeActive(typeof(Bloom), PostProcessBloom);
             SetVolumeActive(typeof(DepthOfField), PostProcessDepthOfField);
             SetVolumeActive(typeof(Vignette), PostProcessVignette);

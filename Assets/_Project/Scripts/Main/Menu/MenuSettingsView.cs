@@ -21,7 +21,7 @@ namespace _Project.Scripts.Main.Menu
         [SerializeField] private GameSettingViews _gameSettingViews;
         [SerializeField] private TextMeshProUGUI _textRestartRequire;
 
-        [Inject] private LocalizationService _localizationService;
+        // [Inject] private LocalizationService _localizationService;
 
         private void Start()
         {
@@ -30,20 +30,20 @@ namespace _Project.Scripts.Main.Menu
         
         private void Awake()
         {
-            _buttonSave.onClick.AddListener(SaveSettings);
-            _buttonReset.onClick.AddListener(ResetToDefault);
-            var videoSettings = _settingsController.VideoSettings;
-            _videoSettingViews.AntiAliasingToggle.onValueChanged.AddListener(value => videoSettings.PostProcessAntiAliasing = value);
-            _videoSettingViews.BloomToggle.onValueChanged.AddListener(value => videoSettings.PostProcessBloom = value);
-            _videoSettingViews.VignetteToggle.onValueChanged.AddListener(value => videoSettings.PostProcessVignette = value);
-            _videoSettingViews.AmbientOcclusionToggle.onValueChanged.AddListener(value => videoSettings.PostProcessAmbientOcclusion = value);
-            _videoSettingViews.DepthOfFieldToggle.onValueChanged.AddListener(value => videoSettings.PostProcessDepthOfField = value);
-            _videoSettingViews.FilmGrainToggle.onValueChanged.AddListener(value => videoSettings.PostProcessFilmGrain = value);
-            _gameSettingViews.CurrentLanguage.onValueChanged.AddListener(value =>
-            {
-                _textRestartRequire.gameObject.SetActive(true);
-                _settingsController.GameSettings.CurrentLocale = (Locales)value;
-            });
+            // _buttonSave.onClick.AddListener(SaveSettings);
+            // _buttonReset.onClick.AddListener(ResetToDefault);
+            // var videoSettings = _settingsController.VideoSettings;
+            // _videoSettingViews.AntiAliasingToggle.onValueChanged.AddListener(value => videoSettings.PostProcessAntiAliasing = value);
+            // _videoSettingViews.BloomToggle.onValueChanged.AddListener(value => videoSettings.PostProcessBloom = value);
+            // _videoSettingViews.VignetteToggle.onValueChanged.AddListener(value => videoSettings.PostProcessVignette = value);
+            // _videoSettingViews.AmbientOcclusionToggle.onValueChanged.AddListener(value => videoSettings.PostProcessAmbientOcclusion = value);
+            // _videoSettingViews.DepthOfFieldToggle.onValueChanged.AddListener(value => videoSettings.PostProcessDepthOfField = value);
+            // _videoSettingViews.FilmGrainToggle.onValueChanged.AddListener(value => videoSettings.PostProcessFilmGrain = value);
+            // _gameSettingViews.CurrentLanguage.onValueChanged.AddListener(value =>
+            // {
+            //     _textRestartRequire.gameObject.SetActive(true);
+            //     _settingsController.GameSettings.CurrentLocale = (Locales)value;
+            // });
 
             _ = LoadLocalizationOptions();
         }
@@ -63,30 +63,30 @@ namespace _Project.Scripts.Main.Menu
         
         private async UniTask LoadLocalizationOptions()
         {
-            var localizations = await _localizationService.GetLocalizationsAsync();
-            _gameSettingViews.CurrentLanguage.options = localizations.Values.Select(x => new TMP_Dropdown.OptionData(x.Info.FullName)).ToList();
+            // var localizations = await _localizationService.GetLocalizationsAsync();
+            // _gameSettingViews.CurrentLanguage.options = localizations.Values.Select(x => new TMP_Dropdown.OptionData(x.Info.FullName)).ToList();
         }
 
         private void Init()
         {
-            _videoSettingViews.AntiAliasingToggle.isOn = _settingsController.VideoSettings.PostProcessAntiAliasing;
-            _videoSettingViews.BloomToggle.isOn = _settingsController.VideoSettings.PostProcessBloom;
-            _videoSettingViews.VignetteToggle.isOn = _settingsController.VideoSettings.PostProcessVignette;
-            _videoSettingViews.AmbientOcclusionToggle.isOn = _settingsController.VideoSettings.PostProcessAmbientOcclusion;
-            _videoSettingViews.DepthOfFieldToggle.isOn = _settingsController.VideoSettings.PostProcessDepthOfField;
-            _videoSettingViews.FilmGrainToggle.isOn = _settingsController.VideoSettings.PostProcessFilmGrain;
-            _gameSettingViews.CurrentLanguage.value = (int)_settingsController.GameSettings.CurrentLocale;
+            // _videoSettingViews.AntiAliasingToggle.isOn = _settingsController.VideoSettings.PostProcessAntiAliasing;
+            // _videoSettingViews.BloomToggle.isOn = _settingsController.VideoSettings.PostProcessBloom;
+            // _videoSettingViews.VignetteToggle.isOn = _settingsController.VideoSettings.PostProcessVignette;
+            // _videoSettingViews.AmbientOcclusionToggle.isOn = _settingsController.VideoSettings.PostProcessAmbientOcclusion;
+            // _videoSettingViews.DepthOfFieldToggle.isOn = _settingsController.VideoSettings.PostProcessDepthOfField;
+            // _videoSettingViews.FilmGrainToggle.isOn = _settingsController.VideoSettings.PostProcessFilmGrain;
+            // _gameSettingViews.CurrentLanguage.value = (int)_settingsController.GameSettings.CurrentLocale;
         }
 
         private void SaveSettings()
         {
-            _settingsController.Save();
+            // _settingsController.Save();
             GoPrevMenu();
         }
         
         private void ResetToDefault()
         {
-            _settingsController.ResetToDefault();
+            // _settingsController.ResetToDefault();
             Init();
         }
         

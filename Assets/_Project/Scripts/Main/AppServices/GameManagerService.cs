@@ -11,15 +11,13 @@ using Zenject;
 
 namespace _Project.Scripts.Main.AppServices
 {
-    public class GameManagerService : Old_BaseService
+    public class GameManagerService : IService, IConstruct
     {
         [SerializeField, ReadOnlyField] private GameStateMachine _gameStateMachine;
         [SerializeField, ReadOnlyField] private bool _isGamePause;
-        [SerializeField, ReadOnlyField] private int _scores;
 
-        [Inject] private Old_ControlService _controlService;
-        [Inject] private Old_SceneLoaderService _sceneLoader;
-        [Inject] private Old_StatisticService _statisticService;
+        private ControlService _controlService;
+        private StatisticService _statisticService;
 
         public event Action<bool> SwitchPause;
         public event Action GameOver;
@@ -30,29 +28,26 @@ namespace _Project.Scripts.Main.AppServices
         public GameState ActiveGameState => _gameStateMachine.ActiveState;
         public bool IsGamePause => _isGamePause;
         public bool IsGameOver => _isGameOver;
-        public int Scores => _scores;
+        
+        public void Construct()
+        {
+            _controlService = Services.Get<ControlService>();
+            _statisticService = Services.Get<StatisticService>();
+
+            _controlService.Controls.Player.Pause.BindAction(BindActions.Started, PauseGame);
+            _gameStateMachine.Init().Forget();
+        }
 
         public async UniTask SetGameState(GameState newState)
         {
             await _gameStateMachine.SetState(newState);
-        }
-        
-        public void Init()
-        {
-            if (string.IsNullOrEmpty(_sceneLoader.InitialScene.name))
-            {
-                _sceneLoader.Init();
-            }
-
-            _controlService.Controls.Player.Pause.BindAction(BindActions.Started, PauseGame);
-            _gameStateMachine.Init().Forget();
         }
 
         public void RestartGame()
         {
             _isGameOver = false;
             RestoreTimeSpeed();
-            _statisticService.EndGameDataSaving(this);
+            _statisticService.EndGameDataSaving();
             _gameStateMachine.SetState(new GameStates.RestartGame()).Forget();
             _gameStateMachine.SetState(new GameStates.PlayNewGame()).Forget();
         }
@@ -64,17 +59,17 @@ namespace _Project.Scripts.Main.AppServices
 
         public void GoToMainMenu()
         {
-            _statisticService.EndGameDataSaving(this);
+            _statisticService.EndGameDataSaving();
             _gameStateMachine.SetState(new GameStates.MainMenu()).Forget();
         }
 
         public void PrepareToPlay()
         {
-            Old_Services.AudioService.PlayMusic(AudioService.MusicPlayerState.Battle).Forget();
-            Old_Services.ControlService.LockCursor();
-            Old_Services.ControlService.Controls.Player.Enable();
-            Old_Services.ControlService.Controls.Menu.Disable();
-            Old_Services.StatisticService.ResetSessionRecords();
+            // Old_Services.AudioService.PlayMusic(AudioService.MusicPlayerState.Battle).Forget();
+            // Old_Services.ControlService.LockCursor();
+            // Old_Services.ControlService.Controls.Player.Enable();
+            // Old_Services.ControlService.Controls.Menu.Disable();
+            // Old_Services.StatisticService.ResetSessionRecords();
         }
 
         public async void PauseGame(InputAction.CallbackContext ctx)
@@ -124,7 +119,7 @@ namespace _Project.Scripts.Main.AppServices
         public async void RunGameOver()
         {
             Debug.Log("Game Over");
-            _statisticService.EndGameDataSaving(this);
+            _statisticService.EndGameDataSaving();
             _controlService.Controls.Player.Disable();
 
             await FluentSetTimeScale(1f);
@@ -153,8 +148,8 @@ namespace _Project.Scripts.Main.AppServices
                 throw new Exception("Adding scores cannot be below zero.");
             }
 
-            _scores += value;
-            _statisticService.SetScores(_scores);
+            // _scores += value;
+            // _statisticService.SetScores(_scores);
         }
 
         private void ReturnGame(InputAction.CallbackContext ctx)

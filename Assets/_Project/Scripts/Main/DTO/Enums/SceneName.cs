@@ -2,6 +2,7 @@
 {
     public enum SceneName
     {
+        Boot,
         Intro,
         MainMenu
     }

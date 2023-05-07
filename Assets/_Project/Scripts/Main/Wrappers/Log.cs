@@ -5,19 +5,40 @@ namespace _Project.Scripts.Main.Wrappers
 {
     public static class Log
     {
-        public static void Error(string message, Type type = Type.Default)
+        public static void Error(string message, UnityEngine.Object context = null, Type type = Type.Default)
         {
-            Debug.LogError(message);
+            if (context == null)
+            {
+                Debug.LogError(message);
+            }
+            else
+            {
+                Debug.LogError(message, context);
+            }
         }
         
-        public static void Info(string message, Type type = Type.Default)
+        public static void Info(string message, UnityEngine.Object context = null, Type type = Type.Default)
         {
-            Debug.Log(message);
+            if (context == null)
+            {
+                Debug.Log(message);
+            }
+            else
+            {
+                Debug.Log(message, context);
+            }
         }        
         
-        public static void Warn(string message, Type type = Type.Default)
+        public static void Warn(string message, UnityEngine.Object context = null, Type type = Type.Default)
         {
-            Debug.LogWarning(message);
+            if (context == null)
+            {
+                Debug.LogWarning(message);
+            }
+            else
+            {
+                Debug.LogWarning(message, context);
+            }
         }
 
         public static void Exception(Exception exception)

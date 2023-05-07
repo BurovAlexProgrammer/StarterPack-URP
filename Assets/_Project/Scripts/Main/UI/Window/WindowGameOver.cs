@@ -25,7 +25,6 @@ namespace _Project.Scripts.Main.UI.Window
         [SerializeField] private DialogView _quitGameDialog;
 
         [Inject] private GameManagerService _gameManager;
-        [Inject] private Old_StatisticService _statisticService;
 
         public event Action Opened;
         public event Action Closed;
@@ -53,12 +52,13 @@ namespace _Project.Scripts.Main.UI.Window
 
         public override async UniTask Show()
         {
+            var statisticService = Services.Get<StatisticService>(); 
             _buttonPanel.localScale = _buttonPanel.localScale.SetAsNew(x: 0f);
             _buttonPanel.SetScale(x: 0f);
             const float duration = 0.8f;
-            var kills = _statisticService.GetIntegerValue(KillMonsterCount, Session);
+            var kills = statisticService.GetIntegerValue(KillMonsterCount, Session);
             var surviveTime =
-                Mathf.RoundToInt(_statisticService.GetFloatValue(LastGameSessionDuration, Session));
+                Mathf.RoundToInt(statisticService.GetFloatValue(LastGameSessionDuration, Session));
             await base.Show();
 
 

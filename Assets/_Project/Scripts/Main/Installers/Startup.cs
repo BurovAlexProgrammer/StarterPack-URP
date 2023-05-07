@@ -26,6 +26,7 @@ namespace _Project.Scripts.Main.Installers
             Services.Register<DebugService>(_debugServiceInstaller);
             Services.Register<SceneLoaderService>();
             Services.Register<StatisticService>();
+            Services.Register<SettingsService>();
             
             SystemsService.Bind<ControlSystem>();
             SystemsService.Bind<ScreenSystem>();

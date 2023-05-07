@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using static _Project.Scripts.Main.AppServices.Old_Services;
 
 namespace _Project.Scripts.Main.Game
 {
@@ -52,7 +51,7 @@ namespace _Project.Scripts.Main.Game
 
         private async void OnEnable()
         {
-            DebugService.CreateExplosionGizmo(transform, _radius);
+            //Services.Get<DebugService>().CreateExplosionGizmo(transform, _radius);
 
             for (var i = 0; i < _rigidbodies.Count; i++)
             {

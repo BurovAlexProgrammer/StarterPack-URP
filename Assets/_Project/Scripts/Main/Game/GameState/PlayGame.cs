@@ -12,21 +12,21 @@ namespace _Project.Scripts.Main.Game.GameState
             public override async UniTask EnterState()
             {
                 await UniTask.Yield();
-                Old_Services.GameManagerService.PrepareToPlay();
-                await Old_Services.SceneLoaderService.LoadSceneAsync(Old_SceneLoaderService.Scenes.MiniGameLevel);
+                // Old_Services.GameManagerService.PrepareToPlay();
+                // await Old_Services.SceneLoaderService.LoadSceneAsync(Old_SceneLoaderService.Scenes.MiniGameLevel);
             }
 
             public override async UniTask ExitState()
             {
-                Old_Services.AudioService.StopMusic();
+                // Old_Services.AudioService.StopMusic();
                 
                 if (Time.timeScale == 0f)
                 {
                     await DOVirtual.Float(0, 1f, 0.5f, x => Time.timeScale = x).AwaitForComplete();
                 }
 
-                Old_Services.ControlService.UnlockCursor();
-                Old_Services.StatisticService.SaveToFile();
+                // Old_Services.ControlService.UnlockCursor();
+                // Old_Services.StatisticService.SaveToFile();
             }
         }
     }

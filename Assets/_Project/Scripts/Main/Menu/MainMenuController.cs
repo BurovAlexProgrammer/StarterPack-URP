@@ -7,7 +7,7 @@ namespace _Project.Scripts.Main.Menu
 {
     public class MainMenuController : MenuController
     {
-        [Inject] private Old_SceneLoaderService _sceneLoader;
+        // [Inject] private Old_SceneLoaderService _sceneLoader;
         [Inject] private GameManagerService _gameManager;
         
         private void Start()
@@ -18,7 +18,7 @@ namespace _Project.Scripts.Main.Menu
 
         public async void QuitGame()
         {
-            await _sceneLoader.HideScene();
+            // await _sceneLoader.HideScene();
             _gameManager.QuitGame();
         }
 

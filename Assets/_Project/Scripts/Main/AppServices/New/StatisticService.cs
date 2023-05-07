@@ -112,9 +112,8 @@ namespace _Project.Scripts.Main.AppServices
             SetRecord(RecordName.MaxScores, maxScores.ToString());
         }
 
-        public void EndGameDataSaving(GameManagerService gameManager)
+        public void EndGameDataSaving()
         {
-            SetScores(gameManager.Scores);
             CalculateSessionDuration();
             SaveToFile();
         }

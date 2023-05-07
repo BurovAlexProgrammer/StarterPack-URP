@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using _Project.Scripts.Extension;
 using _Project.Scripts.Main.UI;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 using static _Project.Scripts.Extension.Common;
-using static _Project.Scripts.Main.AppServices.Old_Services;
 using static _Project.Scripts.Main.DTO.StatisticData;
-using Button = UnityEngine.UI.Button;
 
 namespace _Project.Scripts.Main.Menu
 {
@@ -36,16 +34,16 @@ namespace _Project.Scripts.Main.Menu
                 switch (recordName)
                 {
                     case RecordName.AverageGameSessionDuration:
-                        intValue = Mathf.RoundToInt(StatisticService.GetFloatValue(recordName));
+                        // intValue = Mathf.RoundToInt(StatisticService.GetFloatValue(recordName));
                         _textFields[i].ValueText.text = intValue.Format(StringFormat.Time);
                         break;
                     case RecordName.LongestGameSessionDuration:
-                        intValue = Mathf.RoundToInt(StatisticService.GetFloatValue(recordName));
+                        // intValue = Mathf.RoundToInt(StatisticService.GetFloatValue(recordName));
                         _textFields[i].ValueText.text = intValue.Format(StringFormat.Time);
                         break;
                     default:
-                        var stringValue = StatisticService.GetRecord(recordName);
-                        _textFields[i].ValueText.text = stringValue;
+                        // var stringValue = StatisticService.GetRecord(recordName);
+                        // _textFields[i].ValueText.text = stringValue;
                         break;
                 }
                
