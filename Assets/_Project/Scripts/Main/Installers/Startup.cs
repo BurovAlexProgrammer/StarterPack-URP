@@ -13,6 +13,7 @@ namespace _Project.Scripts.Main.Installers
         [SerializeField] private ScreenServiceInstaller _screenServiceInstaller;
         [SerializeField] private ControlServiceInstaller _controlServiceInstaller;
         [SerializeField] private DebugServiceInstaller _debugServiceInstaller;
+        [SerializeField] private SettingsServiceInstaller _settingsServiceInstaller;
 
         public void Awake() 
         {
@@ -26,7 +27,7 @@ namespace _Project.Scripts.Main.Installers
             Services.Register<DebugService>(_debugServiceInstaller);
             Services.Register<SceneLoaderService>();
             Services.Register<StatisticService>();
-            Services.Register<SettingsService>();
+            Services.Register<SettingsService>(_settingsServiceInstaller);
             
             SystemsService.Bind<ControlSystem>();
             SystemsService.Bind<ScreenSystem>();

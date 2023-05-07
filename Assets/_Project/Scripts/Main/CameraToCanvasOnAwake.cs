@@ -6,19 +6,13 @@ namespace _Project.Scripts.Main
     [RequireComponent(typeof(Canvas))]
     public class CameraToCanvasOnAwake : MonoBehaviour
     {
-        [SerializeField] private CameraType _cameraType;
-
-        private enum CameraType
-        {
-            MainCamera,
-            UiCamera
-        }
-
+        [SerializeField] private ScreenService.CameraType _cameraType;
+        
         private void OnEnable()
         {
             var canvas = GetComponent<Canvas>();
             var screenService = Services.Get<ScreenService>();
-            canvas.worldCamera = _cameraType == CameraType.MainCamera ? screenService.CameraMain : screenService.CameraUI;
+            screenService.SetCameraToCanvas(canvas, _cameraType);
             enabled = false;
         }
     }

@@ -5,15 +5,13 @@ using AudioSettings = _Project.Scripts.Main.Settings.AudioSettings;
 
 namespace _Project.Scripts.Main.AppServices
 {
-    public class SettingsService : IService, IConstruct
+    public class SettingsService : IService, IConstructInstaller
     {
-        [SerializeField] private SettingGroup<VideoSettings> _videoSettings;
-        [SerializeField] private SettingGroup<AudioSettings> _audioSettings;
-        [SerializeField] private SettingGroup<GameSettings> _gameSettings;
+        private SettingGroup<VideoSettings> _videoSettings;
+        private SettingGroup<AudioSettings> _audioSettings;
+        private SettingGroup<GameSettings> _gameSettings;
 
-        // [Inject] private AudioService _audioService;
         private ScreenService _oldScreenService;
-        
         
         private List<ISettingGroup> _settingList;
 
@@ -21,11 +19,15 @@ namespace _Project.Scripts.Main.AppServices
         public AudioSettings Audio => _audioSettings.CurrentSettings;
         public GameSettings GameSettings => _gameSettings.CurrentSettings;
 
-        // public AudioService AudioService => _audioService;
-        // public Old_ScreenService OldScreenService => _oldScreenService;
 
-        public void Construct()
+        public void Construct(IServiceInstaller installer)
         {
+            var settingsServiceInstaller = installer as SettingsServiceInstaller;
+
+            _videoSettings = settingsServiceInstaller.VideoSettings;
+            _audioSettings = settingsServiceInstaller.AudioSettings;
+            _gameSettings = settingsServiceInstaller.GameSettings;
+            
             _settingList = new List<ISettingGroup>
             {
                 _audioSettings, 

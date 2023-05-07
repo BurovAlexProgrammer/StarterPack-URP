@@ -46,8 +46,8 @@ namespace _Project.Scripts.Main.Settings
 
         public void LoadFromFile()
         {
-            StoredFolder ??= Application.dataPath + "/StoredData/";
-            _storedFilePath ??= StoredFolder + $"Stored_{typeof(T).Name}.data";
+            StoredFolder = Application.dataPath + "/StoredData/";
+            _storedFilePath = StoredFolder + $"Stored_{typeof(T).Name}.data";
 
             Directory.CreateDirectory(StoredFolder);
             _saved = ScriptableObject.CreateInstance<T>();

@@ -5,12 +5,17 @@ namespace _Project.Scripts.Main.Systems
 {
     public class ScreenSystem : BaseSystem
     {
-        private ScreenService ScreenService => Services.Get<ScreenService>();
+        private ScreenService ScreenService;
         public override void Init()
         {
             base.Init();
-            ScreenService.InternalProfilerToggle.isOn = ScreenService.InternalProfiler.activeSelf;
-            ScreenService.InternalProfilerToggle.onValueChanged.AddListener(_ => OnInternalProfileDisplayToggle(null));
+            ScreenService = Services.Get<ScreenService>();
+            ScreenService.OnDebugProfilerToggleSwitched += OnDebugProfilerToggleSwitched;
+        }
+
+        private void OnDebugProfilerToggleSwitched(bool value)
+        {
+            new ToggleInternalProfileEvent().Fire();
         }
 
         public override void AddEventHandlers()
@@ -23,12 +28,6 @@ namespace _Project.Scripts.Main.Systems
         {
             base.RemoveEventHandlers();
             RemoveListener<ToggleInternalProfileEvent>();
-        }
-
-        public override void OnDispose()
-        {
-            base.OnDispose();
-            ScreenService.InternalProfilerToggle.onValueChanged.RemoveAllListeners();
         }
 
         private void OnInternalProfileDisplayToggle(BaseEvent baseEvent)

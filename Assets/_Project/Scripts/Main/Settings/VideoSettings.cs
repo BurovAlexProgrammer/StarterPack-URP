@@ -22,27 +22,19 @@ namespace _Project.Scripts.Main.Settings
         private VolumeProfile _volumeProfile;
         private VolumeComponent _volumeComponent;
 
+        
+        
         public override void ApplySettings(SettingsService settingsService)
         {
+            var screenService = Services.Get<ScreenService>();
             // _volumeProfile = settingsService.OldScreenService.VolumeProfile;
-            SetVolumeActive(typeof(Bloom), PostProcessBloom);
-            SetVolumeActive(typeof(DepthOfField), PostProcessDepthOfField);
-            SetVolumeActive(typeof(Vignette), PostProcessVignette);
-            SetVolumeActive(typeof(FilmGrain), PostProcessFilmGrain);
-            SetVolumeActive(typeof(MotionBlur), PostProcessMotionBlur);
-            SetVolumeActive(typeof(LensDistortion), PostProcessLensDistortion);
+            screenService.SetProfileVolume(typeof(Bloom), PostProcessBloom);
+            screenService.SetProfileVolume(typeof(DepthOfField), PostProcessDepthOfField);
+            screenService.SetProfileVolume(typeof(Vignette), PostProcessVignette);
+            screenService.SetProfileVolume(typeof(FilmGrain), PostProcessFilmGrain);
+            screenService.SetProfileVolume(typeof(MotionBlur), PostProcessMotionBlur);
+            screenService.SetProfileVolume(typeof(LensDistortion), PostProcessLensDistortion);
             // postProcessLayer.antialiasingMode = PostProcessAntiAliasing ? PostProcessLayer.Antialiasing.FastApproximateAntialiasing : None;
-        }
-
-        private void SetVolumeActive(Type type, bool state)
-        {
-            if (_volumeProfile.TryGet(type, out _volumeComponent))
-            {
-                _volumeComponent.active = state;
-                return;
-            }
-
-            throw new Exception($"VolumeProfile {type.FullName} not found.");
         }
     }
 
