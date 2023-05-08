@@ -120,6 +120,7 @@ namespace _Project.Scripts.Main.AppServices
         public void SetAudioListenerToCamera(AudioListener audioListener)
         {
            audioListener.transform.SetParent(_cameraMain.transform);
+           audioListener.transform.localPosition = Vector3.zero;
         }
     }
 }

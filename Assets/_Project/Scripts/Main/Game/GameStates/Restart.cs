@@ -2,11 +2,11 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
 
-namespace _Project.Scripts.Main.Game.GameState
+namespace _Project.Scripts.Main.Game.GameStates
 {
-    public static partial class GameStates
+    public static partial class GameState
     {
-        public class RestartGame : GameState
+        public class RestartGame : GameStateBase
         {
             public override async UniTask EnterState()
             {

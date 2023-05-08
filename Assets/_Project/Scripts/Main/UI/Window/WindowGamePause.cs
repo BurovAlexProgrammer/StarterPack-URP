@@ -19,7 +19,7 @@ namespace _Project.Scripts.Main.UI.Window
         [SerializeField] private Button _mainMenuButton;
         [SerializeField] private DialogView _quitGameDialog;
 
-        [Inject] private GameManagerService _gameManager;
+        [Inject] private GameStateService _gameManager;
         // private SettingsService _settingsService;
         private ControlService _controlService;
 

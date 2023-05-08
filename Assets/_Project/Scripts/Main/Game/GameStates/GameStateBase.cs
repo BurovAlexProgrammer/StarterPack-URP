@@ -1,9 +1,9 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
 
-namespace _Project.Scripts.Main.Game.GameState
+namespace _Project.Scripts.Main.Game.GameStates
 {
-    public abstract class GameState
+    public abstract class GameStateBase
     {
         public bool EqualsState(Type type) => GetType() == type;
         

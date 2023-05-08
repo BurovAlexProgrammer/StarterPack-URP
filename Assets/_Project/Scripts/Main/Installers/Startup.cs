@@ -31,12 +31,14 @@ namespace _Project.Scripts.Main.Installers
             Services.Register<StatisticService>();
             Services.Register<AudioService>(_audioServiceInstaller);
             Services.Register<SettingsService>(_settingsServiceInstaller);
+            Services.Register<GameStateService>();
             
             SystemsService.Bind<ControlSystem>();
             SystemsService.Bind<ScreenSystem>();
             SystemsService.Bind<SceneLoaderSystem>();
             SystemsService.Bind<DebugSystem>();
             SystemsService.Bind<AudioSystem>();
+            SystemsService.Bind<GameStateSystem>();
             
             //Services.Get<StatisticService>().AddValueToRecord(StatisticData.RecordName.Movement, 10f);
             new StartupSystemsInitializedEvent().Fire();

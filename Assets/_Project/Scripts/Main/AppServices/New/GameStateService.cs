@@ -1,46 +1,82 @@
 using System;
 using _Project.Scripts.Extension;
-using _Project.Scripts.Extension.Attributes;
-using _Project.Scripts.Main.Game;
-using _Project.Scripts.Main.Game.GameState;
+using _Project.Scripts.Main.Game.GameStates;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Zenject;
+using GameState = _Project.Scripts.Main.Game.GameStates.GameState;
 
 namespace _Project.Scripts.Main.AppServices
 {
-    public class GameManagerService : IService, IConstruct
+    public class GameStateService : IService, IConstruct
     {
-        [SerializeField, ReadOnlyField] private GameStateMachine _gameStateMachine;
-        [SerializeField, ReadOnlyField] private bool _isGamePause;
+        private bool _isGamePause;
+        private bool _transaction;
+        private bool _isGameOver;
+        private GameStateBase _currentState;
 
         private ControlService _controlService;
         private StatisticService _statisticService;
 
         public event Action<bool> SwitchPause;
+        public event Action StateChanged;
         public event Action GameOver;
-
-        private bool _transaction;
-        private bool _isGameOver;
-
-        public GameState ActiveGameState => _gameStateMachine.ActiveState;
+        
+        public GameStateBase CurrentState => _currentState;
         public bool IsGamePause => _isGamePause;
         public bool IsGameOver => _isGameOver;
+
+
+
         
-        public void Construct()
+        public async void Construct()
         {
             _controlService = Services.Get<ControlService>();
             _statisticService = Services.Get<StatisticService>();
 
             _controlService.Controls.Player.Pause.BindAction(BindActions.Started, PauseGame);
-            _gameStateMachine.Init().Forget();
+            
+            // if (_sceneLoader.InitialSceneEquals(SceneName.Boot))
+            {
+                await SetStateAsync<GameState.Boot>();
+                //await SetState(new GameState.MainMenu());
+                return;
+            }
+            
+            await SetStateAsync<GameState.CustomScene>();
         }
 
-        public async UniTask SetGameState(GameState newState)
+        ~GameStateService()
         {
-            await _gameStateMachine.SetState(newState);
+            _controlService.Controls.Player.Pause.UnbindAction(BindActions.Started, PauseGame);
+        }
+
+        public async UniTask SetStateAsync<T>() where T: GameStateBase
+        {
+            var newState = Activator.CreateInstance<T>();
+            if (_currentState == newState)
+            {
+                Debug.Log($"GameState Enter: {newState.GetType().Name} (Already entered, skipped)");
+                return;
+            }
+
+            if (_currentState != null)
+            {
+                Debug.Log("GameState Exit: " + _currentState.GetType().Name);
+                await _currentState.ExitState();
+            }
+
+            _currentState = newState;
+
+            Debug.Log($"GameState Enter: <color=#39A5E6> {newState.GetType().Name}</color>");
+            await _currentState.EnterState();
+            StateChanged?.Invoke();
+        }
+        
+        public void SetState<T>() where T: GameStateBase
+        {
+            _ = SetStateAsync<T>();
         }
 
         public void RestartGame()
@@ -48,19 +84,19 @@ namespace _Project.Scripts.Main.AppServices
             _isGameOver = false;
             RestoreTimeSpeed();
             _statisticService.EndGameDataSaving();
-            _gameStateMachine.SetState(new GameStates.RestartGame()).Forget();
-            _gameStateMachine.SetState(new GameStates.PlayNewGame()).Forget();
+            SetState<GameState.RestartGame>();
+            SetState<GameState.PlayNewGame>();
         }
 
         public void QuitGame()
         {
-            _gameStateMachine.SetState(new GameStates.QuitGame()).Forget();
+            SetState<GameState.QuitGame>();
         }
 
         public void GoToMainMenu()
         {
             _statisticService.EndGameDataSaving();
-            _gameStateMachine.SetState(new GameStates.MainMenu()).Forget();
+            //SetState(new GameState.MainMenu()).Forget();
         }
 
         public void PrepareToPlay()
@@ -76,8 +112,8 @@ namespace _Project.Scripts.Main.AppServices
         {
             if (_transaction) return;
 
-            if (ActiveStateEquals<GameStates.PlayNewGame>() == false &&
-                ActiveStateEquals<GameStates.CustomScene>() == false) return;
+            if (ActiveStateEquals<GameState.PlayNewGame>() == false &&
+                ActiveStateEquals<GameState.CustomScene>() == false) return;
 
             Debug.Log("Game paused to menu.");
 
@@ -100,8 +136,8 @@ namespace _Project.Scripts.Main.AppServices
             if (_isGameOver) return;
             if (_transaction) return;
 
-            if (ActiveStateEquals<GameStates.PlayNewGame>() == false &&
-                ActiveStateEquals<GameStates.CustomScene>() == false) return;
+            if (ActiveStateEquals<GameState.PlayNewGame>() == false &&
+                ActiveStateEquals<GameState.CustomScene>() == false) return;
 
             Debug.Log("Game returned from pause.");
             _transaction = true;
@@ -131,9 +167,9 @@ namespace _Project.Scripts.Main.AppServices
             GameOver?.Invoke();
         }
 
-        public bool ActiveStateEquals<T>() where T : GameState
+        public bool ActiveStateEquals<T>() where T : GameStateBase
         {
-            return ActiveGameState.EqualsState(typeof(T));
+            return CurrentState.EqualsState(typeof(T));
         }
 
         public void RestoreTimeSpeed()

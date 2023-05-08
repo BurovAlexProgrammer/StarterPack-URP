@@ -1,13 +1,12 @@
-﻿using _Project.Scripts.Main.AppServices;
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
-namespace _Project.Scripts.Main.Game.GameState
+namespace _Project.Scripts.Main.Game.GameStates
 {
-    public static partial class GameStates
+    public static partial class GameState
     {
-        public class PlayNewGame : GameState
+        public class PlayNewGame : GameStateBase
         {
             public override async UniTask EnterState()
             {

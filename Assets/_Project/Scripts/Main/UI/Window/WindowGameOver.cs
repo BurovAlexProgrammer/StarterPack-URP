@@ -1,5 +1,4 @@
 using System;
-using _Project.Scripts.Extension;
 using _Project.Scripts.Main.AppServices;
 using _Project.Scripts.UI;
 using Cysharp.Threading.Tasks;
@@ -24,7 +23,7 @@ namespace _Project.Scripts.Main.UI.Window
         [SerializeField] private Button _quitGameButton;
         [SerializeField] private DialogView _quitGameDialog;
 
-        [Inject] private GameManagerService _gameManager;
+        [Inject] private GameStateService _gameManager;
 
         public event Action Opened;
         public event Action Closed;
