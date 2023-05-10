@@ -1,5 +1,6 @@
 using _Project.Scripts.Extension;
 using _Project.Scripts.Main.AppServices;
+using _Project.Scripts.Main.Events;
 using _Project.Scripts.UI;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -66,25 +67,24 @@ namespace _Project.Scripts.Main.UI.Window
         private async void GoToMainMenu()
         {
             await Close();
-            _gameManager.RestoreTimeSpeed();
-            _gameManager.GoToMainMenu();
+            new GoToMainMenuEvent().Fire();
         }
 
         private async void RestartGame()
         {
             await Close();
-            _gameManager.RestartGame();
+            new RestartGameEvent().Fire();
         }
         
         private async void ReturnGame()
         {
             await Close();
-            _gameManager.ReturnGame();
+            new ReturnFromPauseToGameEvent().Fire();
         }
 
         private void ReturnGame(InputAction.CallbackContext ctx)
         {
-            ReturnGame();
+            new ReturnFromPauseToGameEvent().Fire();
         }
 
         private void OnMusicSwitch(bool newValue)

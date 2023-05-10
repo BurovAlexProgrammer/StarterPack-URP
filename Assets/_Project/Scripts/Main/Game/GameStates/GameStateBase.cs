@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 
 namespace _Project.Scripts.Main.Game.GameStates
 {
     public abstract class GameStateBase
     {
-        public bool EqualsState(Type type) => GetType() == type;
-        
+        public bool EqualsState<T>() => this.GetType() == typeof(T);
+
         public virtual async UniTask EnterState()
         {
             await UniTask.Yield();
@@ -21,5 +22,7 @@ namespace _Project.Scripts.Main.Game.GameStates
         {
             await UniTask.Yield();
         }
+        
+        
     }
 }

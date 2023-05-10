@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using _Project.Scripts.Extension;
 using _Project.Scripts.Main.Game.GameStates;
 using Cysharp.Threading.Tasks;
@@ -14,29 +15,26 @@ namespace _Project.Scripts.Main.AppServices
         private bool _isGamePause;
         private bool _transaction;
         private bool _isGameOver;
+        private bool _isMenuMode;
         private GameStateBase _currentState;
-
-        private ControlService _controlService;
+        
         private StatisticService _statisticService;
 
         public event Action<bool> SwitchPause;
         public event Action StateChanged;
-        public event Action GameOver;
+        public event Action OnGameOver;
         
         public GameStateBase CurrentState => _currentState;
         public bool IsGamePause => _isGamePause;
         public bool IsGameOver => _isGameOver;
+        public bool IsTransaction => _transaction;
+        public bool IsMenuMode => _isMenuMode;
 
 
-
-        
         public async void Construct()
         {
-            _controlService = Services.Get<ControlService>();
             _statisticService = Services.Get<StatisticService>();
 
-            _controlService.Controls.Player.Pause.BindAction(BindActions.Started, PauseGame);
-            
             // if (_sceneLoader.InitialSceneEquals(SceneName.Boot))
             {
                 await SetStateAsync<GameState.Boot>();
@@ -47,10 +45,12 @@ namespace _Project.Scripts.Main.AppServices
             await SetStateAsync<GameState.CustomScene>();
         }
 
-        ~GameStateService()
+        public void SetPause(bool value)
         {
-            _controlService.Controls.Player.Pause.UnbindAction(BindActions.Started, PauseGame);
+            _isGamePause = value;
+            SwitchPause?.Invoke(_isGamePause);
         }
+        
 
         public async UniTask SetStateAsync<T>() where T: GameStateBase
         {
@@ -95,6 +95,7 @@ namespace _Project.Scripts.Main.AppServices
 
         public void GoToMainMenu()
         {
+            RestoreTimeSpeed();
             _statisticService.EndGameDataSaving();
             //SetState(new GameState.MainMenu()).Forget();
         }
@@ -108,68 +109,30 @@ namespace _Project.Scripts.Main.AppServices
             // Old_Services.StatisticService.ResetSessionRecords();
         }
 
-        public async void PauseGame(InputAction.CallbackContext ctx)
+        public void GameOver()
         {
-            if (_transaction) return;
-
-            if (ActiveStateEquals<GameState.PlayNewGame>() == false &&
-                ActiveStateEquals<GameState.CustomScene>() == false) return;
-
-            Debug.Log("Game paused to menu.");
-
-            var fixedDeltaTime = Time.fixedDeltaTime;
-            _transaction = true;
-            _isGamePause = true;
-            _controlService.Controls.Player.Disable();
-            _controlService.UnlockCursor();
-            SwitchPause?.Invoke(_isGamePause);
-
-            await FluentSetTimeScale(0f);
-
-            _controlService.Controls.Menu.Enable();
-            Time.fixedDeltaTime = fixedDeltaTime;
-            _transaction = false;
-        }
-
-        public async void ReturnGame()
-        {
-            if (_isGameOver) return;
-            if (_transaction) return;
-
-            if (ActiveStateEquals<GameState.PlayNewGame>() == false &&
-                ActiveStateEquals<GameState.CustomScene>() == false) return;
-
-            Debug.Log("Game returned from pause.");
-            _transaction = true;
-            _isGamePause = false;
-            SwitchPause?.Invoke(_isGamePause);
-            _controlService.Controls.Player.Enable();
-            _controlService.LockCursor();
-
-            await FluentSetTimeScale(1f);
-
-            _controlService.Controls.Menu.Disable();
-            _transaction = false;
-        }
-
-        public async void RunGameOver()
-        {
-            Debug.Log("Game Over");
-            _statisticService.EndGameDataSaving();
-            _controlService.Controls.Player.Disable();
-
-            await FluentSetTimeScale(1f);
-
-            _controlService.UnlockCursor();
-            _controlService.Controls.Menu.Enable();
-
             _isGameOver = true;
-            GameOver?.Invoke();
+            OnGameOver?.Invoke();
         }
 
-        public bool ActiveStateEquals<T>() where T : GameStateBase
+        public bool CurrentStateIs<T>() where T : GameStateBase
         {
-            return CurrentState.EqualsState(typeof(T));
+            return CurrentState.EqualsState<T>();
+        }
+        
+        public bool CurrentStateIsNot<T>() where T : GameStateBase
+        {
+            return !CurrentState.EqualsState<T>();
+        }
+
+        public bool CurrentStateIs(params Type[] states)
+        {
+            return states.Any(x => x == CurrentState.GetType());
+        }
+        
+        public bool CurrentStateIsNot(params Type[] states)
+        {
+            return states.All(x => x != CurrentState.GetType());
         }
 
         public void RestoreTimeSpeed()
@@ -187,21 +150,18 @@ namespace _Project.Scripts.Main.AppServices
             // _scores += value;
             // _statisticService.SetScores(_scores);
         }
-
-        private void ReturnGame(InputAction.CallbackContext ctx)
+        
+        public async UniTask FluentSetTimeScale(float scale, float duration)
         {
-            ReturnGame();
-        }
-
-        private async UniTask FluentSetTimeScale(float scale)
-        {
+            var fixedDeltaTime = Time.fixedDeltaTime;
             var timeScale = Time.timeScale;
-            await DOVirtual.Float(timeScale, scale, 1f, SetTimeScale)
+            await DOVirtual.Float(timeScale, scale, duration, SetTimeScale)
                 .SetUpdate(true)
                 .AsyncWaitForCompletion();
+            Time.fixedDeltaTime = fixedDeltaTime;
         }
 
-        private void SetTimeScale(float value)
+        public void SetTimeScale(float value)
         {
             Time.timeScale = value;
             Time.fixedDeltaTime = Time.timeScale * 0.02f;
