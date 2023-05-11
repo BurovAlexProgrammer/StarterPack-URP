@@ -1,12 +1,10 @@
 using System;
 using System.Linq;
-using _Project.Scripts.Extension;
-using _Project.Scripts.Main.Game.GameStates;
+using _Project.Scripts.Main.DTO.Enums;
+using _Project.Scripts.Main.Events;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using GameState = _Project.Scripts.Main.Game.GameStates.GameState;
 
 namespace _Project.Scripts.Main.AppServices
 {
@@ -16,15 +14,17 @@ namespace _Project.Scripts.Main.AppServices
         private bool _transaction;
         private bool _isGameOver;
         private bool _isMenuMode;
-        private GameStateBase _currentState;
+        
+        private GameState _currentState;
         
         private StatisticService _statisticService;
+        private SceneLoaderService _sceneLoader;
 
         public event Action<bool> SwitchPause;
         public event Action StateChanged;
         public event Action OnGameOver;
         
-        public GameStateBase CurrentState => _currentState;
+        public GameState CurrentState => _currentState;
         public bool IsGamePause => _isGamePause;
         public bool IsGameOver => _isGameOver;
         public bool IsTransaction => _transaction;
@@ -34,15 +34,13 @@ namespace _Project.Scripts.Main.AppServices
         public async void Construct()
         {
             _statisticService = Services.Get<StatisticService>();
+            _sceneLoader = Services.Get<SceneLoaderService>();
 
-            // if (_sceneLoader.InitialSceneEquals(SceneName.Boot))
+            if (_sceneLoader.IsCustomScene())
             {
-                await SetStateAsync<GameState.Boot>();
-                //await SetState(new GameState.MainMenu());
-                return;
+                await _sceneLoader.LoadSceneAsync(SceneName.Boot);
+                SetState(GameState.CustomScene);
             }
-            
-            await SetStateAsync<GameState.CustomScene>();
         }
 
         public void SetPause(bool value)
@@ -52,45 +50,29 @@ namespace _Project.Scripts.Main.AppServices
         }
         
 
-        public async UniTask SetStateAsync<T>() where T: GameStateBase
+        public void SetState(GameState newState)
         {
-            var newState = Activator.CreateInstance<T>();
             if (_currentState == newState)
             {
-                Debug.Log($"GameState Enter: {newState.GetType().Name} (Already entered, skipped)");
+                Debug.Log($"GameState: {newState.ToString()} (Already entered, skipped)");
                 return;
             }
-
-            if (_currentState != null)
-            {
-                Debug.Log("GameState Exit: " + _currentState.GetType().Name);
-                await _currentState.ExitState();
-            }
-
+            
             _currentState = newState;
 
-            Debug.Log($"GameState Enter: <color=#39A5E6> {newState.GetType().Name}</color>");
-            await _currentState.EnterState();
+            Debug.Log($"GameState: <color=#39A5E6> {newState.ToString()}</color>");
             StateChanged?.Invoke();
         }
         
-        public void SetState<T>() where T: GameStateBase
-        {
-            _ = SetStateAsync<T>();
-        }
-
         public void RestartGame()
         {
             _isGameOver = false;
-            RestoreTimeSpeed();
-            _statisticService.EndGameDataSaving();
-            SetState<GameState.RestartGame>();
-            SetState<GameState.PlayNewGame>();
+            new RestartGameEvent().Fire();
         }
 
         public void QuitGame()
         {
-            SetState<GameState.QuitGame>();
+            new QuitGameEvent().Fire();
         }
 
         public void GoToMainMenu()
@@ -114,25 +96,15 @@ namespace _Project.Scripts.Main.AppServices
             _isGameOver = true;
             OnGameOver?.Invoke();
         }
-
-        public bool CurrentStateIs<T>() where T : GameStateBase
+        
+        public bool CurrentStateIs(params GameState[] states)
         {
-            return CurrentState.EqualsState<T>();
+            return states.Any(x => x == CurrentState);
         }
         
-        public bool CurrentStateIsNot<T>() where T : GameStateBase
+        public bool CurrentStateIsNot(params GameState[] states)
         {
-            return !CurrentState.EqualsState<T>();
-        }
-
-        public bool CurrentStateIs(params Type[] states)
-        {
-            return states.Any(x => x == CurrentState.GetType());
-        }
-        
-        public bool CurrentStateIsNot(params Type[] states)
-        {
-            return states.All(x => x != CurrentState.GetType());
+            return states.All(x => x != CurrentState);
         }
 
         public void RestoreTimeSpeed()

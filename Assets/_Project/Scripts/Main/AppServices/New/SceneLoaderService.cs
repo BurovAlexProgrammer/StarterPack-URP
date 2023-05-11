@@ -12,9 +12,13 @@ namespace _Project.Scripts.Main.AppServices
         private Scene _currentScene;
         private Scene _preparedScene;
         private Scene _initialScene;
+        private Scene _bootScene;
+
+        public Scene InitialScene => _initialScene;
 
         public void Construct()
         {
+            _bootScene = SceneManager.GetSceneByName("Boot");
             _initialScene = SceneManager.GetActiveScene();
         }
         
@@ -38,6 +42,11 @@ namespace _Project.Scripts.Main.AppServices
         public async void UnloadActiveScene()
         {
             await SceneManager.UnloadSceneAsync(_currentScene);
+        }
+
+        public bool IsCustomScene()
+        {
+            return _initialScene != _bootScene;
         }
 
         private async UniTask PrepareScene(SceneName sceneName)

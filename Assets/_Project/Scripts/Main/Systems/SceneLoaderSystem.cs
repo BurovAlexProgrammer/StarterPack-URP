@@ -7,21 +7,30 @@ namespace _Project.Scripts.Main.Systems
 {
     public class SceneLoaderSystem : BaseSystem
     {
+        private SceneLoaderService _sceneLoader;
+
         public override void Init()
         {
             base.Init();
+            _sceneLoader = Services.Get<SceneLoaderService>();
         }
 
         public override void AddEventHandlers()
         {
             base.AddEventHandlers();
             AddListener<StartupSystemsInitializedEvent>(StartupSystemsInitialized);
+            AddListener<ShowMainMenuEvent>(ShowMainMenu);
+        }
+
+        private void ShowMainMenu(BaseEvent obj)
+        {
+            _sceneLoader.LoadSceneAsync(SceneName.MainMenu);
         }
 
         private void StartupSystemsInitialized(BaseEvent evnt)
         {
             Log.Info("Initialized");
-            Services.Get<SceneLoaderService>().LoadSceneAsync(SceneName.Intro);
+            _sceneLoader.LoadSceneAsync(SceneName.Intro);
         }
 
         public override void RemoveEventHandlers()

@@ -1,10 +1,10 @@
 ﻿using _Project.Scripts.Extension;
 using _Project.Scripts.Main.AppServices;
+using _Project.Scripts.Main.DTO.Enums;
 using _Project.Scripts.Main.Events;
 using _Project.Scripts.Main.Wrappers;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using GameState = _Project.Scripts.Main.Game.GameStates.GameState;
 
 namespace _Project.Scripts.Main.Systems
 {
@@ -42,6 +42,14 @@ namespace _Project.Scripts.Main.Systems
             AddListener<GameOverEvent>(OnGameOver);
             AddListener<StartupSystemsInitializedEvent>(StartupSystemsInitialized);
             AddListener<IntroEndEvent>(IntroEnded);
+            AddListener<RestartGameEvent>(OnGameRestart);
+        }
+
+        private void OnGameRestart(BaseEvent baseEvent)
+        {
+            _gameStateService.RestoreTimeSpeed();
+            _statisticService.EndGameDataSaving();
+            new RestartGameEvent().Fire();
         }
 
         private void OnGameOver(BaseEvent baseEvent)
@@ -51,19 +59,20 @@ namespace _Project.Scripts.Main.Systems
 
         private void IntroEnded(BaseEvent baseEvent)
         {
-            _gameStateService.SetState<GameState.MainMenu>();
+            new ShowMainMenuEvent().Fire();
         }
 
-        private void StartupSystemsInitialized(BaseEvent baseEvent)
+        private async void StartupSystemsInitialized(BaseEvent baseEvent)
         {
-            _gameStateService.SetState<GameState.Intro>();
+            _gameStateService.SetState(GameState.Intro);
+            await 3f.WaitInSeconds();
+            new IntroEndEvent().Fire();
         }
         
         public async void PauseGame(InputAction.CallbackContext ctx)
         {
             if (_transaction) return;
-            if (_gameStateService.CurrentStateIsNot<GameState.PlayNewGame>()) return; 
-            if (_gameStateService.CurrentStateIsNot<GameState.CustomScene>()) return;
+            if (_gameStateService.CurrentStateIsNot(GameState.PlayGame, GameState.CustomScene)) return;
 
             Debug.Log("Game paused to menu.");
 
@@ -82,8 +91,7 @@ namespace _Project.Scripts.Main.Systems
         {
             if (_transaction) return;
             if (_gameStateService.IsGameOver) return;
-            if (_gameStateService.CurrentStateIsNot<GameState.PlayNewGame>()) return;
-            if (_gameStateService.CurrentStateIsNot<GameState.CustomScene>()) return;
+            if (_gameStateService.CurrentStateIsNot(GameState.PlayGame, GameState.CustomScene)) return;
 
             Debug.Log("Game returned from pause.");
             

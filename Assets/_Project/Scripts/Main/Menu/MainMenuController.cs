@@ -1,14 +1,12 @@
-using _Project.Scripts.Main.AppServices;
-using _Project.Scripts.Main.Game.GameStates;
+using _Project.Scripts.Main.Events;
 using Cysharp.Threading.Tasks;
-using Zenject;
 
 namespace _Project.Scripts.Main.Menu
 {
     public class MainMenuController : MenuController
     {
         // [Inject] private Old_SceneLoaderService _sceneLoader;
-        [Inject] private GameStateService _gameManager;
+        // [Inject] private GameStateService _gameManager;
         
         private void Start()
         {
@@ -16,15 +14,14 @@ namespace _Project.Scripts.Main.Menu
         }
 
 
-        public async void QuitGame()
+        public void QuitGame()
         {
-            // await _sceneLoader.HideScene();
-            _gameManager.QuitGame();
+            new QuitGameEvent().Fire();
         }
 
         public void StartNewGame()
         {
-            _gameManager.SetState<GameState.PlayNewGame>();
+            new StartNewGameEvent().Fire();
         }
 
         protected override async UniTask EnterState(MenuStates newState)
