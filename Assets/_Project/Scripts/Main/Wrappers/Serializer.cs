@@ -1,4 +1,7 @@
+using System;
+using _Project.Scripts.Extension;
 using Newtonsoft.Json;
+using UnityEngine;
 
 namespace _Project.Scripts.Main.Wrappers
 {
@@ -9,9 +12,28 @@ namespace _Project.Scripts.Main.Wrappers
             return JsonConvert.SerializeObject(target);
         }
 
-        public static T FromJson<T>(string json)
+        public static T ParseScriptableObject<T>(string json) where T : ScriptableObject
         {
-            return JsonConvert.DeserializeObject<T>(json);
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(json, new Common.ScriptableObjectConverter<T>());
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+        
+        public static T Parse<T>(string json) 
+        {
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(json);
+            }
+            catch (Exception e)
+            {
+                return default(T);
+            }
         }
     }
 }

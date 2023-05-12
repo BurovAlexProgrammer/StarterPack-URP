@@ -3,11 +3,7 @@ using System.IO;
 using _Project.Scripts.Extension;
 using _Project.Scripts.Main.AppServices;
 using _Project.Scripts.Main.Wrappers;
-using Newtonsoft.Json;
 using UnityEngine;
-using Zenject;
-using static _Project.Scripts.Extension.Common;
-using Debug = UnityEngine.Debug;
 
 namespace _Project.Scripts.Main.Settings
 {
@@ -55,16 +51,18 @@ namespace _Project.Scripts.Main.Settings
             if (!File.Exists(_storedFilePath))
             {
                 CreateDefaultSettingFile();
-                Debug.LogWarning($"Stored file '{_storedFilePath}' not found. Default settings using instead.");
+                Log.Warn($"Stored file '{_storedFilePath}' not found. Default settings using instead.");
+                SaveDefaults();
                 _saved.CopyDataFrom(_default);
             }
             else
             {
                 var json = File.ReadAllText(_storedFilePath);
-                var storedData = JsonConvert.DeserializeObject<T>(json, new ScriptableObjectConverter<T>());
+                var storedData = Serializer.ParseScriptableObject<T>(json);
                 if (storedData == null)
                 {
-                    Debug.LogWarning($"Stored file '{_storedFilePath}' is corrupted. Default settings using instead.");
+                    Log.Warn($"Stored file '{_storedFilePath}' is corrupted. Default settings saved instead.");
+                    SaveDefaults();
                 }
                 _saved.CopyDataFrom(storedData ?? _default);
             }
@@ -76,6 +74,12 @@ namespace _Project.Scripts.Main.Settings
         public void SaveToFile()
         {
             var data = Serializer.ToJson(_current);
+            File.WriteAllText(_storedFilePath, data);
+        }
+
+        public void SaveDefaults()
+        {
+            var data = Serializer.ToJson(_default);
             File.WriteAllText(_storedFilePath, data);
         }
 
