@@ -5,9 +5,6 @@ namespace _Project.Scripts.Main.Menu
 {
     public class MainMenuController : MenuController
     {
-        // [Inject] private Old_SceneLoaderService _sceneLoader;
-        // [Inject] private GameStateService _gameManager;
-        
         private void Start()
         {
             _ = EnterState(MenuStates.MainMenu);

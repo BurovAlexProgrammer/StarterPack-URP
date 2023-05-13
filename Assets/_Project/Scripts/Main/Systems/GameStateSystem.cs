@@ -47,6 +47,12 @@ namespace _Project.Scripts.Main.Systems
             AddListener<RestartGameEvent>(OnGameRestart);
             AddListener<ShowMainMenuEvent>(GoToMainMenu);
             AddListener<GoToMainMenuEvent>(GoToMainMenu);
+            AddListener<QuitGameEvent>(OnQuitGame);
+        }
+
+        private void OnQuitGame(BaseEvent obj)
+        {
+            _gameStateService.QuitGame();
         }
 
         private void GoToMainMenu(BaseEvent obj)

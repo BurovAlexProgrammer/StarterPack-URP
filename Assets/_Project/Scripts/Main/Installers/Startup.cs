@@ -32,6 +32,7 @@ namespace _Project.Scripts.Main.Installers
             Services.Register<AudioService>(_audioServiceInstaller);
             Services.Register<SettingsService>(_settingsServiceInstaller);
             Services.Register<GameStateService>();
+            Services.Register<LocalizationService>();
             
             SystemsService.Bind<ControlSystem>();
             SystemsService.Bind<ScreenSystem>();

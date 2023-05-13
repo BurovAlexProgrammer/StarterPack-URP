@@ -1,3 +1,4 @@
+using _Project.Scripts.Main.AppServices;
 using TMPro;
 using UnityEngine;
 
@@ -24,7 +25,8 @@ namespace _Project.Scripts.Main.Localizations
                 _textMesh.text = "---NO KEY---";
                 return;
             }
-            // _textMesh.text = _prefix + _localization.GetLocalizedText(_localizedTextKey) + _postfix;
+            
+            _textMesh.text = _prefix + Services.Get<LocalizationService>().GetLocalizedText(_localizedTextKey) + _postfix;
         }
     }
 }
