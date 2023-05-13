@@ -1,6 +1,6 @@
-﻿using _Project.Scripts.Main.AppServices;
-using _Project.Scripts.Main.Events;
+﻿using _Project.Scripts.Main.Events;
 using _Project.Scripts.Main.Events.Audio;
+using _Project.Scripts.Main.Services;
 
 namespace _Project.Scripts.Main.Systems
 {
@@ -12,8 +12,8 @@ namespace _Project.Scripts.Main.Systems
         public override void Init()
         {
             base.Init();
-            _screenService = Services.Get<ScreenService>();
-            _audioService = Services.Get<AudioService>();
+            _screenService = Services.Services.Get<ScreenService>();
+            _audioService = Services.Services.Get<AudioService>();
         }
 
         public override void AddEventHandlers()

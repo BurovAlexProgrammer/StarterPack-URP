@@ -1,7 +1,5 @@
-using _Project.Scripts.Main.AppServices;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Zenject;
 
 namespace _Project.Scripts.Main.Localizations
 {

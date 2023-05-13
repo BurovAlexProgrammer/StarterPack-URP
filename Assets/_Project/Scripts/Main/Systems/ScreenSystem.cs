@@ -1,5 +1,5 @@
-﻿using _Project.Scripts.Main.AppServices;
-using _Project.Scripts.Main.Events;
+﻿using _Project.Scripts.Main.Events;
+using _Project.Scripts.Main.Services;
 
 namespace _Project.Scripts.Main.Systems
 {
@@ -9,7 +9,7 @@ namespace _Project.Scripts.Main.Systems
         public override void Init()
         {
             base.Init();
-            ScreenService = Services.Get<ScreenService>();
+            ScreenService = Services.Services.Get<ScreenService>();
             ScreenService.OnDebugProfilerToggleSwitched += OnDebugProfilerToggleSwitched;
         }
 

@@ -1,7 +1,7 @@
 ﻿using _Project.Scripts.Extension;
-using _Project.Scripts.Main.AppServices;
 using _Project.Scripts.Main.Events;
-using ModestTree;
+using _Project.Scripts.Main.Services;
+using _Project.Scripts.Main.Wrappers;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
@@ -14,7 +14,7 @@ namespace _Project.Scripts.Main.Systems
         public override void Init()
         {
             base.Init();
-            _controlService = Services.Get<ControlService>();
+            _controlService = Services.Services.Get<ControlService>();
             _controlService.Controls.Player.InternalProfiler.BindAction(BindActions.Started, OnPressInternalProfile);
             _controlService.Controls.Enable();
         }

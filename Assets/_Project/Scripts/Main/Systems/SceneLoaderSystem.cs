@@ -1,6 +1,6 @@
-﻿using _Project.Scripts.Main.AppServices;
-using _Project.Scripts.Main.DTO.Enums;
+﻿using _Project.Scripts.Main.DTO.Enums;
 using _Project.Scripts.Main.Events;
+using _Project.Scripts.Main.Services;
 using _Project.Scripts.Main.Wrappers;
 using Cysharp.Threading.Tasks;
 
@@ -13,7 +13,7 @@ namespace _Project.Scripts.Main.Systems
         public override void Init()
         {
             base.Init();
-            _sceneLoader = Services.Get<SceneLoaderService>();
+            _sceneLoader = Services.Services.Get<SceneLoaderService>();
         }
         
         public override void RemoveEventHandlers()

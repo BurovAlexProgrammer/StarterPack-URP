@@ -1,4 +1,4 @@
-﻿using _Project.Scripts.Main.AppServices;
+﻿using _Project.Scripts.Main.Services;
 using UnityEngine;
 
 namespace _Project.Scripts.Main
@@ -9,7 +9,7 @@ namespace _Project.Scripts.Main
 
         private void Awake()
         {
-            _screenService = Services.Get<ScreenService>();
+            _screenService = Services.Services.Get<ScreenService>();
         }
 
         private void OnDestroy()

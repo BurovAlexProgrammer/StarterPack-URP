@@ -1,5 +1,5 @@
 ﻿using _Project.Scripts.Extension;
-using _Project.Scripts.Main.AppServices;
+using _Project.Scripts.Main.Services;
 using UnityEngine;
 
 namespace _Project.Scripts.Main.Game
@@ -35,7 +35,7 @@ namespace _Project.Scripts.Main.Game
 
         private void OnApplicationQuit()
         {
-            Services.Dispose();
+            Services.Services.Dispose();
             SystemsService.Dispose();
         }
     }

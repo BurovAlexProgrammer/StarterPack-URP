@@ -1,5 +1,5 @@
-﻿using _Project.Scripts.Main.AppServices;
-using _Project.Scripts.Main.Events;
+﻿using _Project.Scripts.Main.Events;
+using _Project.Scripts.Main.Services;
 
 namespace _Project.Scripts.Main.Systems
 {

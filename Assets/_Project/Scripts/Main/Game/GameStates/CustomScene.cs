@@ -1,4 +1,4 @@
-﻿using _Project.Scripts.Main.AppServices;
+﻿using _Project.Scripts.Main.Services;
 using Cysharp.Threading.Tasks;
 
 namespace _Project.Scripts.Main.Game.GameStates
@@ -10,7 +10,7 @@ namespace _Project.Scripts.Main.Game.GameStates
             public override async UniTask EnterState()
             {
                 await UniTask.Yield();
-                Services.Get<GameStateService>().PrepareToPlay();
+                Services.Services.Get<GameStateService>().PrepareToPlay();
             }
         }
     }

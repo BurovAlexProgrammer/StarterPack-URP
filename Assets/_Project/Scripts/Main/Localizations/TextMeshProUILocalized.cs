@@ -1,4 +1,4 @@
-using _Project.Scripts.Main.AppServices;
+using _Project.Scripts.Main.Services;
 using TMPro;
 using UnityEngine;
 
@@ -26,7 +26,7 @@ namespace _Project.Scripts.Main.Localizations
                 return;
             }
             
-            _textMesh.text = _prefix + Services.Get<LocalizationService>().GetLocalizedText(_localizedTextKey) + _postfix;
+            _textMesh.text = _prefix + Services.Services.Get<LocalizationService>().GetLocalizedText(_localizedTextKey) + _postfix;
         }
     }
 }

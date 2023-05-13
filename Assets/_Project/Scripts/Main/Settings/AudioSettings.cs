@@ -1,7 +1,5 @@
-using _Project.Scripts.Main.AppServices;
-using _Project.Scripts.Main.DTO.Enums;
+using _Project.Scripts.Main.Services;
 using UnityEngine;
-using Zenject;
 
 namespace _Project.Scripts.Main.Settings
 {

@@ -1,14 +1,11 @@
 using System;
-using System.Linq;
-using _Project.Scripts.Main.AppServices;
 using _Project.Scripts.Main.Localizations;
+using _Project.Scripts.Main.Services;
 using _Project.Scripts.Main.UI;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
-using Button = UnityEngine.UI.Button;
 
 namespace _Project.Scripts.Main.Menu
 {
@@ -21,7 +18,8 @@ namespace _Project.Scripts.Main.Menu
         [SerializeField] private GameSettingViews _gameSettingViews;
         [SerializeField] private TextMeshProUGUI _textRestartRequire;
 
-        // [Inject] private LocalizationService _localizationService;
+        private SettingsService _settingsService;
+        private LocalizationService _localizationService;
 
         private void Start()
         {
@@ -30,22 +28,24 @@ namespace _Project.Scripts.Main.Menu
         
         private void Awake()
         {
-            // _buttonSave.onClick.AddListener(SaveSettings);
-            // _buttonReset.onClick.AddListener(ResetToDefault);
-            // var videoSettings = _settingsController.VideoSettings;
-            // _videoSettingViews.AntiAliasingToggle.onValueChanged.AddListener(value => videoSettings.PostProcessAntiAliasing = value);
-            // _videoSettingViews.BloomToggle.onValueChanged.AddListener(value => videoSettings.PostProcessBloom = value);
-            // _videoSettingViews.VignetteToggle.onValueChanged.AddListener(value => videoSettings.PostProcessVignette = value);
-            // _videoSettingViews.AmbientOcclusionToggle.onValueChanged.AddListener(value => videoSettings.PostProcessAmbientOcclusion = value);
-            // _videoSettingViews.DepthOfFieldToggle.onValueChanged.AddListener(value => videoSettings.PostProcessDepthOfField = value);
-            // _videoSettingViews.FilmGrainToggle.onValueChanged.AddListener(value => videoSettings.PostProcessFilmGrain = value);
-            // _gameSettingViews.CurrentLanguage.onValueChanged.AddListener(value =>
-            // {
-            //     _textRestartRequire.gameObject.SetActive(true);
-            //     _settingsController.GameSettings.CurrentLocale = (Locales)value;
-            // });
-
-            _ = LoadLocalizationOptions();
+            _settingsService = Services.Services.Get<SettingsService>();
+            _localizationService = Services.Services.Get<LocalizationService>();
+            _buttonSave.onClick.AddListener(SaveSettings);
+            _buttonReset.onClick.AddListener(ResetToDefault);
+            var videoSettings = _settingsService.Video;
+            _videoSettingViews.AntiAliasingToggle.onValueChanged.AddListener(value => videoSettings.PostProcessAntiAliasing = value);
+            _videoSettingViews.BloomToggle.onValueChanged.AddListener(value => videoSettings.PostProcessBloom = value);
+            _videoSettingViews.VignetteToggle.onValueChanged.AddListener(value => videoSettings.PostProcessVignette = value);
+            _videoSettingViews.AmbientOcclusionToggle.onValueChanged.AddListener(value => videoSettings.PostProcessAmbientOcclusion = value);
+            _videoSettingViews.DepthOfFieldToggle.onValueChanged.AddListener(value => videoSettings.PostProcessDepthOfField = value);
+            _videoSettingViews.FilmGrainToggle.onValueChanged.AddListener(value => videoSettings.PostProcessFilmGrain = value);
+            _gameSettingViews.CurrentLanguage.onValueChanged.AddListener(value =>
+            {
+                _textRestartRequire.gameObject.SetActive(true);
+                _settingsService.GameSettings.CurrentLocale = (Locales)value;
+            });
+            
+            LoadLocalizationOptions().Forget();
         }
         
         private void OnDestroy()
@@ -64,30 +64,30 @@ namespace _Project.Scripts.Main.Menu
         private async UniTask LoadLocalizationOptions()
         {
             await UniTask.Yield();
-            // var localizations = await _localizationService.GetLocalizationsAsync();
-            // _gameSettingViews.CurrentLanguage.options = localizations.Values.Select(x => new TMP_Dropdown.OptionData(x.Info.FullName)).ToList();
+            var localizations = await _localizationService.GetLocalizationsAsync();
+            //_gameSettingViews.CurrentLanguage.options = localizations.Values.Select(x => new TMP_Dropdown.OptionData(x.Info.FullName)).ToList();
         }
 
         private void Init()
         {
-            // _videoSettingViews.AntiAliasingToggle.isOn = _settingsController.VideoSettings.PostProcessAntiAliasing;
-            // _videoSettingViews.BloomToggle.isOn = _settingsController.VideoSettings.PostProcessBloom;
-            // _videoSettingViews.VignetteToggle.isOn = _settingsController.VideoSettings.PostProcessVignette;
-            // _videoSettingViews.AmbientOcclusionToggle.isOn = _settingsController.VideoSettings.PostProcessAmbientOcclusion;
-            // _videoSettingViews.DepthOfFieldToggle.isOn = _settingsController.VideoSettings.PostProcessDepthOfField;
-            // _videoSettingViews.FilmGrainToggle.isOn = _settingsController.VideoSettings.PostProcessFilmGrain;
-            // _gameSettingViews.CurrentLanguage.value = (int)_settingsController.GameSettings.CurrentLocale;
+            _videoSettingViews.AntiAliasingToggle.isOn = _settingsService.Video.PostProcessAntiAliasing;
+            _videoSettingViews.BloomToggle.isOn = _settingsService.Video.PostProcessBloom;
+            _videoSettingViews.VignetteToggle.isOn = _settingsService.Video.PostProcessVignette;
+            _videoSettingViews.AmbientOcclusionToggle.isOn = _settingsService.Video.PostProcessAmbientOcclusion;
+            _videoSettingViews.DepthOfFieldToggle.isOn = _settingsService.Video.PostProcessDepthOfField;
+            _videoSettingViews.FilmGrainToggle.isOn = _settingsService.Video.PostProcessFilmGrain;
+            _gameSettingViews.CurrentLanguage.value = (int)_settingsService.GameSettings.CurrentLocale;
         }
 
         private void SaveSettings()
         {
-            // _settingsController.Save();
+            _settingsController.Save();
             GoPrevMenu();
         }
         
         private void ResetToDefault()
         {
-            // _settingsController.ResetToDefault();
+            _settingsController.ResetToDefault();
             Init();
         }
         

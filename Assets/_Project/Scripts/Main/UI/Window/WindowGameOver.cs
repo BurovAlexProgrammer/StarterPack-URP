@@ -1,13 +1,11 @@
-using System;
-using _Project.Scripts.Main.AppServices;
 using _Project.Scripts.Main.Events;
+using _Project.Scripts.Main.Services;
 using _Project.Scripts.UI;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 using static _Project.Scripts.Extension.Common;
 using static _Project.Scripts.Main.DTO.StatisticData.FormatType;
 using static _Project.Scripts.Main.DTO.StatisticData.RecordName;
@@ -52,7 +50,7 @@ namespace _Project.Scripts.Main.UI.Window
 
         public override async UniTask Show()
         {
-            var statisticService = Services.Get<StatisticService>(); 
+            var statisticService = Services.Services.Get<StatisticService>(); 
             _buttonPanel.localScale = _buttonPanel.localScale.SetAsNew(x: 0f);
             _buttonPanel.SetScale(x: 0f);
             const float duration = 0.8f;

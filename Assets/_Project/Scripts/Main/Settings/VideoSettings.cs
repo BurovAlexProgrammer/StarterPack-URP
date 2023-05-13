@@ -1,5 +1,5 @@
 using System;
-using _Project.Scripts.Main.AppServices;
+using _Project.Scripts.Main.Services;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -24,7 +24,7 @@ namespace _Project.Scripts.Main.Settings
 
         public override void ApplySettings(SettingsService settingsService)
         {
-            Services.Get<ScreenService>().ApplySettings(this);
+            Services.Services.Get<ScreenService>().ApplySettings(this);
         }
     }
 }

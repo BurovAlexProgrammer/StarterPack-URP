@@ -1,6 +1,6 @@
-﻿using _Project.Scripts.Main.AppServices;
-using _Project.Scripts.Main.Events;
+﻿using _Project.Scripts.Main.Events;
 using _Project.Scripts.Main.Events.Audio;
+using _Project.Scripts.Main.Services;
 
 namespace _Project.Scripts.Main.Systems
 {
@@ -10,7 +10,7 @@ namespace _Project.Scripts.Main.Systems
         public override void Init()
         {
             base.Init();
-            _audioService = Services.Get<AudioService>();
+            _audioService = Services.Services.Get<AudioService>();
             new AudioSystemInitializedEvent().Fire();
         }
 

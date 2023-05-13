@@ -1,12 +1,11 @@
 using _Project.Scripts.Extension;
-using _Project.Scripts.Main.AppServices;
 using _Project.Scripts.Main.Events;
+using _Project.Scripts.Main.Services;
 using _Project.Scripts.UI;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using Zenject;
 
 namespace _Project.Scripts.Main.UI.Window
 {
@@ -20,13 +19,15 @@ namespace _Project.Scripts.Main.UI.Window
         [SerializeField] private Button _mainMenuButton;
         [SerializeField] private DialogView _quitGameDialog;
 
-        [Inject] private GameStateService _gameManager;
-        // private SettingsService _settingsService;
+        private GameStateService _gameStateService;
+        private SettingsService _settingsService;
         private ControlService _controlService;
 
         private void Awake()
         {
-            _controlService = Services.Get<ControlService>();
+            _gameStateService = Services.Services.Get<GameStateService>();
+            _settingsService = Services.Services.Get<SettingsService>();
+            _controlService = Services.Services.Get<ControlService>();
             _controlService.Controls.Menu.Pause.BindAction(BindActions.Started, ReturnGame);
             _restartGameButton.onClick.AddListener(RestartGame);
             _returnGameButton.onClick.AddListener(ReturnGame);
@@ -42,8 +43,8 @@ namespace _Project.Scripts.Main.UI.Window
         
         private void Start()
         {
-            // _musicToggle.isOn = _settingsService.Audio.MusicEnabled;
-            // _soundsToggle.isOn = _settingsService.Audio.SoundEnabled;
+            _musicToggle.isOn = _settingsService.Audio.MusicEnabled;
+            _soundsToggle.isOn = _settingsService.Audio.SoundEnabled;
         }
 
         private void OnDestroy()
@@ -89,14 +90,14 @@ namespace _Project.Scripts.Main.UI.Window
 
         private void OnMusicSwitch(bool newValue)
         {
-            // _settingsService.Audio.MusicEnabled = newValue;
-            // _settingsService.Save();
+            _settingsService.Audio.MusicEnabled = newValue;
+            _settingsService.Save();
         }
     
         private void OnSoundsSwitch(bool newValue)
         {
-            // _settingsService.Audio.SoundEnabled = newValue;
-            // _settingsService.Save();
+            _settingsService.Audio.SoundEnabled = newValue;
+            _settingsService.Save();
         }
     
         private void ShowQuitGameDialog()
@@ -114,7 +115,7 @@ namespace _Project.Scripts.Main.UI.Window
             if (result)
             {
                 await Close();
-                _gameManager.RestoreTimeSpeed();
+                _gameStateService.RestoreTimeSpeed();
                 new QuitGameEvent().Fire();
                 return;
             }

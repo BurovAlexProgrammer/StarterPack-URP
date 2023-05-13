@@ -1,7 +1,7 @@
 ﻿using _Project.Scripts.Extension;
-using _Project.Scripts.Main.AppServices;
 using _Project.Scripts.Main.DTO.Enums;
 using _Project.Scripts.Main.Events;
+using _Project.Scripts.Main.Services;
 using _Project.Scripts.Main.Wrappers;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -17,15 +17,15 @@ namespace _Project.Scripts.Main.Systems
         public override void Init()
         {
             base.Init();
-            _gameStateService = Services.Get<GameStateService>();
-            _controlService = Services.Get<ControlService>();
+            _gameStateService = Services.Services.Get<GameStateService>();
+            _controlService = Services.Services.Get<ControlService>();
             _controlService.Controls.Player.Pause.BindAction(BindActions.Started, PauseGame);
         }
 
         public override void OnDispose()
         {
             base.OnDispose();
-            Services.Get<ControlService>().Controls.Player.Pause.UnbindAction(BindActions.Started, PauseGame);
+            Services.Services.Get<ControlService>().Controls.Player.Pause.UnbindAction(BindActions.Started, PauseGame);
         }
 
         public override void RemoveEventHandlers()
