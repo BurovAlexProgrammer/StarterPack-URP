@@ -12,7 +12,6 @@ namespace _Project.Scripts.Main.Systems
     {
         private GameStateService _gameStateService;
         private ControlService _controlService;
-        private StatisticService _statisticService;
         private bool _transaction;
         
         public override void Init()
@@ -32,8 +31,11 @@ namespace _Project.Scripts.Main.Systems
         public override void RemoveEventHandlers()
         {
             base.RemoveEventHandlers();
+            RemoveListener<GameOverEvent>();
             RemoveListener<StartupSystemsInitializedEvent>();
             RemoveListener<IntroEndEvent>();
+            RemoveListener<RestartGameEvent>();
+            RemoveListener<GoToMainMenuEvent>();
         }
         
         public override void AddEventHandlers()
@@ -43,18 +45,20 @@ namespace _Project.Scripts.Main.Systems
             AddListener<StartupSystemsInitializedEvent>(StartupSystemsInitialized);
             AddListener<IntroEndEvent>(IntroEnded);
             AddListener<RestartGameEvent>(OnGameRestart);
+            AddListener<ShowMainMenuEvent>(GoToMainMenu);
+            AddListener<GoToMainMenuEvent>(GoToMainMenu);
+        }
+
+        private void GoToMainMenu(BaseEvent obj)
+        {
+            _gameStateService.RestoreTimeSpeed();
+            _gameStateService.SetState(GameState.MainMenu);
         }
 
         private void OnGameRestart(BaseEvent baseEvent)
         {
+            _gameStateService.IsGameOver = false;
             _gameStateService.RestoreTimeSpeed();
-            _statisticService.EndGameDataSaving();
-            new RestartGameEvent().Fire();
-        }
-
-        private void OnGameOver(BaseEvent baseEvent)
-        {
-            Log.Info("Game Over");
         }
 
         private void IntroEnded(BaseEvent baseEvent)
@@ -106,10 +110,9 @@ namespace _Project.Scripts.Main.Systems
             _transaction = false;
         }
         
-        public async void RunGameOver()
+        private async void OnGameOver(BaseEvent baseEvent)
         {
             Log.Info("Game Over");
-            _statisticService.EndGameDataSaving();
             _controlService.Controls.Player.Disable();
 
             await _gameStateService.FluentSetTimeScale(1f, 1f);

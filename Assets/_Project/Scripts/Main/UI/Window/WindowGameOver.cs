@@ -1,5 +1,6 @@
 using System;
 using _Project.Scripts.Main.AppServices;
+using _Project.Scripts.Main.Events;
 using _Project.Scripts.UI;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -23,10 +24,10 @@ namespace _Project.Scripts.Main.UI.Window
         [SerializeField] private Button _quitGameButton;
         [SerializeField] private DialogView _quitGameDialog;
 
-        [Inject] private GameStateService _gameManager;
+        // [Inject] private GameStateService _gameManager;
 
-        public event Action Opened;
-        public event Action Closed;
+        // public event Action Opened;
+        // public event Action Closed;
 
         private void Awake()
         {
@@ -46,7 +47,7 @@ namespace _Project.Scripts.Main.UI.Window
         private async void Retry()
         {
             await Close();
-            _gameManager.RestartGame();
+            new RestartGameEvent().Fire();
         }
 
         public override async UniTask Show()
@@ -59,8 +60,7 @@ namespace _Project.Scripts.Main.UI.Window
             var surviveTime =
                 Mathf.RoundToInt(statisticService.GetFloatValue(LastGameSessionDuration, Session));
             await base.Show();
-
-
+            
             await DOVirtual
                 .Int(0, surviveTime, duration, x => _surviveTimeText.text = x.Format(StringFormat.Time))
                 .AsyncWaitForCompletion();
@@ -77,7 +77,7 @@ namespace _Project.Scripts.Main.UI.Window
         private async void GoToMainMenu()
         {
             await Close();
-            _gameManager.GoToMainMenu();
+            new GoToMainMenuEvent().Fire();
         } 
 
         private void ShowQuitGameDialog()
@@ -89,7 +89,7 @@ namespace _Project.Scripts.Main.UI.Window
         {
             if (result)
             {
-                _gameManager.QuitGame();
+                new QuitGameEvent().Fire();
                 return;
             }
         

@@ -38,6 +38,15 @@ namespace _Project.Scripts.Main.AppServices
             _preparedScene = sceneInstance.Scene;
             _preparedScene.SetActive(false);
         }
+
+        public void UnloadCurrentScene()
+        {
+            var currentScene = SceneManager.GetActiveScene();
+            var newScene = SceneManager.CreateScene("Empty");
+            newScene.SetActive(true);
+
+            SceneManager.UnloadSceneAsync(currentScene);
+        }
         
         public async void UnloadActiveScene()
         {

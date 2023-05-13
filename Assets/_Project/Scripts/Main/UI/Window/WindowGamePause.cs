@@ -115,7 +115,7 @@ namespace _Project.Scripts.Main.UI.Window
             {
                 await Close();
                 _gameManager.RestoreTimeSpeed();
-                _gameManager.QuitGame();
+                new QuitGameEvent().Fire();
                 return;
             }
         

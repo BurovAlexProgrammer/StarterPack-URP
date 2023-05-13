@@ -20,6 +20,7 @@ namespace _Project.Scripts.Main.Wrappers
             }
             catch (Exception e)
             {
+                Log.Exception(e);
                 return null;
             }
         }
@@ -32,6 +33,7 @@ namespace _Project.Scripts.Main.Wrappers
             }
             catch (Exception e)
             {
+                Log.Exception(e);
                 return default(T);
             }
         }

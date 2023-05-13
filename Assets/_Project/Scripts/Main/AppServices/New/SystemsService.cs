@@ -4,6 +4,9 @@ using System.Linq;
 using _Project.Scripts.Main.Events;
 using _Project.Scripts.Main.Systems;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace _Project.Scripts.Main.AppServices
 {
@@ -26,7 +29,14 @@ namespace _Project.Scripts.Main.AppServices
 
         public static void FireEvent<T>(T firedEvent) where T : BaseEvent
         {
-            Debug.Log($"Fired event <color=orange>{firedEvent.GetType().Name}</color>. {DateTime.Now.ToString("hh:mm:ss")}");
+            #if UNITY_EDITOR
+            var color = EditorGUIUtility.isProSkin ? "#00952A" : "#017020";
+            #else
+            var color = "default";
+            #endif
+            
+            Debug.Log($"Fired event <color={color}>{firedEvent.GetType().Name}</color>. {DateTime.Now.ToString("hh:mm:ss")}");
+            
             
             foreach (var (key, system) in _systems)
             {

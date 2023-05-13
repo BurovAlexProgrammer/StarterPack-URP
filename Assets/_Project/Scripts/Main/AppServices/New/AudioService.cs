@@ -40,12 +40,17 @@ namespace _Project.Scripts.Main.AppServices
             SwitchSoundEffects(settingsService.Audio.SoundEnabled);
         }
 
-        public async UniTaskVoid PlayMusic(MusicPlayerState playerState)
+        public void PlayMusic(MusicPlayerState musicPlayerState)
         {
-            if (_currentState == playerState) return;
-            
-            var lastState = playerState;
-            _currentState = playerState;
+            if (_currentState == musicPlayerState) return;
+
+            PlayMusicAsync(musicPlayerState).Forget();
+        }
+
+        private async UniTask PlayMusicAsync(MusicPlayerState musicPlayerState)
+        {
+            var lastState = musicPlayerState;
+            _currentState = musicPlayerState;
             PlayRandomTrack();
 
             while (_currentState == lastState)

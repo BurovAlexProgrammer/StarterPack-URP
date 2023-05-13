@@ -5,35 +5,28 @@ using _Project.Scripts.Main.Events;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace _Project.Scripts.Main.AppServices
 {
     public class GameStateService : IService, IConstruct
     {
-        private bool _isGamePause;
-        private bool _transaction;
-        private bool _isGameOver;
+        public bool IsGamePause;
+        public bool IsGameOver;
         private bool _isMenuMode;
         
         private GameState _currentState;
         
-        private StatisticService _statisticService;
         private SceneLoaderService _sceneLoader;
 
-        public event Action<bool> SwitchPause;
-        public event Action StateChanged;
-        public event Action OnGameOver;
-        
         public GameState CurrentState => _currentState;
-        public bool IsGamePause => _isGamePause;
-        public bool IsGameOver => _isGameOver;
-        public bool IsTransaction => _transaction;
         public bool IsMenuMode => _isMenuMode;
 
 
         public async void Construct()
         {
-            _statisticService = Services.Get<StatisticService>();
             _sceneLoader = Services.Get<SceneLoaderService>();
 
             if (_sceneLoader.IsCustomScene())
@@ -45,8 +38,7 @@ namespace _Project.Scripts.Main.AppServices
 
         public void SetPause(bool value)
         {
-            _isGamePause = value;
-            SwitchPause?.Invoke(_isGamePause);
+            IsGamePause = value;
         }
         
 
@@ -59,27 +51,28 @@ namespace _Project.Scripts.Main.AppServices
             }
             
             _currentState = newState;
+            
+#if UNITY_EDITOR
+            var color = EditorGUIUtility.isProSkin ? "#39A5E6" : "#004F99";
+#else
+            var color = "default";
+#endif
 
-            Debug.Log($"GameState: <color=#39A5E6> {newState.ToString()}</color>");
-            StateChanged?.Invoke();
+            Debug.Log($"GameState: <color={color}> {newState.ToString()}</color>. {DateTime.Now.ToString("hh:mm:ss")}");
         }
         
         public void RestartGame()
         {
-            _isGameOver = false;
             new RestartGameEvent().Fire();
         }
 
         public void QuitGame()
         {
-            new QuitGameEvent().Fire();
-        }
-
-        public void GoToMainMenu()
-        {
-            RestoreTimeSpeed();
-            _statisticService.EndGameDataSaving();
-            //SetState(new GameState.MainMenu()).Forget();
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+                Application.Quit();
+#endif
         }
 
         public void PrepareToPlay()
@@ -93,8 +86,7 @@ namespace _Project.Scripts.Main.AppServices
 
         public void GameOver()
         {
-            _isGameOver = true;
-            OnGameOver?.Invoke();
+            IsGameOver = true;
         }
         
         public bool CurrentStateIs(params GameState[] states)

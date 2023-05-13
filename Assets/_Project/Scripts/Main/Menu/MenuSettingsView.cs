@@ -63,6 +63,7 @@ namespace _Project.Scripts.Main.Menu
         
         private async UniTask LoadLocalizationOptions()
         {
+            await UniTask.Yield();
             // var localizations = await _localizationService.GetLocalizationsAsync();
             // _gameSettingViews.CurrentLanguage.options = localizations.Values.Select(x => new TMP_Dropdown.OptionData(x.Info.FullName)).ToList();
         }
