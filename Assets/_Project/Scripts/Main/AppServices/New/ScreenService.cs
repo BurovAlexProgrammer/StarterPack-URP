@@ -15,7 +15,6 @@ namespace _Project.Scripts.Main.AppServices
         public Action<bool> OnDebugProfilerToggleSwitched; 
 
         private Camera _cameraMain;
-        private Camera _cameraUI;
         private Volume _volume;
         private VolumeProfile _volumeProfile;
         private GameObject _internalProfiler;
@@ -26,7 +25,7 @@ namespace _Project.Scripts.Main.AppServices
         public enum CameraType
         {
             MainCamera,
-            UiCamera
+            //UiCamera
         }
         
         public void ToggleDisplayProfiler()
@@ -42,7 +41,6 @@ namespace _Project.Scripts.Main.AppServices
             var screenServiceInstaller = installer.Install() as ScreenServiceInstaller;
             _internalProfiler = screenServiceInstaller.InternalProfilerPanels;
             _cameraMain = screenServiceInstaller.CameraMain;
-            _cameraUI = screenServiceInstaller.CameraUI;
             _volume = screenServiceInstaller.Volume;
             _volumeProfile = _volume.profile;
             _internalProfilerManager = screenServiceInstaller.InternalProfilerManager;
@@ -93,9 +91,9 @@ namespace _Project.Scripts.Main.AppServices
             mainCameraTransform.localRotation = Quaternion.identity;
         }
 
-        public void SetCameraToCanvas(Canvas canvas, CameraType cameraType)
+        public void SetCameraToCanvas(Canvas canvas)
         {
-            canvas.worldCamera = cameraType == CameraType.MainCamera ? _cameraMain : _cameraUI;
+            canvas.worldCamera = _cameraMain;
         }
 
         public void ApplySettings(VideoSettings videoSettings)

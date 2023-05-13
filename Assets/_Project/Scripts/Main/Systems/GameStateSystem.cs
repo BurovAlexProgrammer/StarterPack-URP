@@ -69,7 +69,8 @@ namespace _Project.Scripts.Main.Systems
         private async void StartupSystemsInitialized(BaseEvent baseEvent)
         {
             _gameStateService.SetState(GameState.Intro);
-            await 3f.WaitInSeconds();
+            // await 3f.WaitInSeconds();
+            await 0.3f.WaitInSeconds();
             new IntroEndEvent().Fire();
         }
         

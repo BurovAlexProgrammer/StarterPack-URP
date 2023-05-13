@@ -8,7 +8,6 @@ namespace _Project.Scripts.Main.AppServices
     public class ScreenServiceInstaller : BaseServiceInstaller
     {
         public Camera CameraMain;
-        public Camera CameraUI;
         public Volume Volume;
         public GraphyManager InternalProfilerManager;
         public GameObject InternalProfilerPanels;
