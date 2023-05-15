@@ -35,7 +35,9 @@ namespace _Project.Scripts.Main.Systems
             RemoveListener<StartupSystemsInitializedEvent>();
             RemoveListener<IntroEndEvent>();
             RemoveListener<RestartGameEvent>();
+            RemoveListener<ShowMainMenuEvent>();
             RemoveListener<GoToMainMenuEvent>();
+            RemoveListener<QuitGameEvent>();
         }
         
         public override void AddEventHandlers()
@@ -90,7 +92,7 @@ namespace _Project.Scripts.Main.Systems
             _transaction = true;
             _gameStateService.SetPause(true);
             _controlService.Controls.Player.Disable();
-            _controlService.UnlockCursor();
+            _controlService.SetMenuMode();
 
             await _gameStateService.FluentSetTimeScale(0f, 1f);
 
@@ -109,7 +111,7 @@ namespace _Project.Scripts.Main.Systems
             _transaction = true;
             _gameStateService.SetPause(false);
             _controlService.Controls.Player.Enable();
-            _controlService.LockCursor();
+            _controlService.SetPlayMode();
 
             await _gameStateService.FluentSetTimeScale(1f, 1f);
 
@@ -124,7 +126,7 @@ namespace _Project.Scripts.Main.Systems
 
             await _gameStateService.FluentSetTimeScale(1f, 1f);
 
-            _controlService.UnlockCursor();
+            _controlService.SetMenuMode();
             _controlService.Controls.Menu.Enable();
 
             _gameStateService.GameOver();

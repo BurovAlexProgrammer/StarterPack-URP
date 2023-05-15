@@ -15,13 +15,13 @@ namespace _Project.Scripts.Main.Systems
         {
             base.Init();
             _controlService = Services.Services.Get<ControlService>();
-            _controlService.Controls.Player.InternalProfiler.BindAction(BindActions.Started, OnPressInternalProfile);
             _controlService.Controls.Enable();
+            _controlService.BindAction(BindActions.Started, OnPressInternalProfile);
         }
 
         public override void OnDispose()
         {
-            _controlService.Controls.Player.InternalProfiler.UnbindAction(BindActions.Started, OnPressInternalProfile);
+            _controlService.UnbindAction(BindActions.Started, OnPressInternalProfile);
             base.OnDispose();
         }
 
@@ -29,19 +29,34 @@ namespace _Project.Scripts.Main.Systems
         {
             base.RemoveEventHandlers();
             RemoveListener<PlayGameEvent>();
+            RemoveListener<ShowMainMenuEvent>();
+            RemoveListener<GoToMainMenuEvent>();
         }
 
         public override void AddEventHandlers()
         {
             base.AddEventHandlers();
             AddListener<PlayGameEvent>(OnPlayGame);
+            AddListener<ShowMainMenuEvent>(OnAnyMenu);
+            AddListener<GoToMainMenuEvent>(OnAnyMenu);
+        }
+
+        private void OnAnyMenu(BaseEvent obj)
+        {
+            _controlService.SetMenuMode();
+            new ControlModeChangedEvent()
+            {
+                MenuMode = _controlService.MenuMode
+            }.Fire();
         }
 
         private void OnPlayGame(BaseEvent obj)
         {
-            _controlService.LockCursor();
-            _controlService.Controls.Player.Enable();
-            _controlService.Controls.Menu.Disable();
+            _controlService.SetPlayMode();
+            new ControlModeChangedEvent()
+            {
+                MenuMode = _controlService.MenuMode
+            }.Fire();
         }
 
         private void OnPressInternalProfile(InputAction.CallbackContext obj)

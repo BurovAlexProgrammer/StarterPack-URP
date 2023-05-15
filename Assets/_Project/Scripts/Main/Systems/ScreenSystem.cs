@@ -1,16 +1,19 @@
 ﻿using _Project.Scripts.Main.Events;
 using _Project.Scripts.Main.Services;
+using UnityEngine.Rendering.Universal;
 
 namespace _Project.Scripts.Main.Systems
 {
     public class ScreenSystem : BaseSystem
     {
-        private ScreenService ScreenService;
+        private ScreenService _screenService;
+        private SettingsService _settingsService;
         public override void Init()
         {
             base.Init();
-            ScreenService = Services.Services.Get<ScreenService>();
-            ScreenService.OnDebugProfilerToggleSwitched += OnDebugProfilerToggleSwitched;
+            _screenService = Services.Services.Get<ScreenService>();
+            _settingsService = Services.Services.Get<SettingsService>();
+            _screenService.OnDebugProfilerToggleSwitched += OnDebugProfilerToggleSwitched;
         }
 
         private void OnDebugProfilerToggleSwitched(bool value)
@@ -22,6 +25,16 @@ namespace _Project.Scripts.Main.Systems
         {
             base.AddEventHandlers();
             AddListener<ToggleInternalProfileEvent>(OnInternalProfileDisplayToggle);
+            AddListener<ControlModeChangedEvent>(ControlModeChanged);
+        }
+
+        private void ControlModeChanged(BaseEvent baseEvent)
+        {
+            var modeChangedEvent = baseEvent as ControlModeChangedEvent;
+            if (_settingsService.Video.PostProcessDepthOfField)
+            {
+                _screenService.ActiveProfileVolume<DepthOfField>(!modeChangedEvent.MenuMode);
+            }
         }
 
         public override void RemoveEventHandlers()
@@ -32,7 +45,7 @@ namespace _Project.Scripts.Main.Systems
 
         private void OnInternalProfileDisplayToggle(BaseEvent baseEvent)
         {
-            ScreenService.ToggleDisplayProfiler();
+            _screenService.ToggleDisplayProfiler();
         }
 
     }

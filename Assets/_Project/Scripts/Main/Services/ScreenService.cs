@@ -1,6 +1,5 @@
 ﻿using System;
 using _Project.Scripts.Extension;
-using _Project.Scripts.Main.Services;
 using _Project.Scripts.Main.Settings;
 using _Project.Scripts.Main.Wrappers;
 using Tayx.Graphy;
@@ -63,11 +62,12 @@ namespace _Project.Scripts.Main.Services
             _internalProfilerToggle.onValueChanged.RemoveListener(OnProfilerToggleSwitched);
         }
         
-        public void SetVolumeProfile(Type type, bool state)
+        public void ActiveProfileVolume<T>(bool active) where T : IPostProcessComponent
         {
+            var type = typeof(T);
             if (_volumeProfile.TryGet(type, out VolumeComponent volumeComponent))
             {
-                volumeComponent.active = state;
+                volumeComponent.active = active;
                 return;
             }
 
@@ -99,12 +99,12 @@ namespace _Project.Scripts.Main.Services
 
         public void ApplySettings(VideoSettings videoSettings)
         {
-            SetVolumeProfile(typeof(Bloom), videoSettings.PostProcessBloom);
-            SetVolumeProfile(typeof(DepthOfField), videoSettings.PostProcessDepthOfField);
-            SetVolumeProfile(typeof(Vignette), videoSettings.PostProcessVignette);
-            SetVolumeProfile(typeof(FilmGrain), videoSettings.PostProcessFilmGrain);
-            SetVolumeProfile(typeof(MotionBlur), videoSettings.PostProcessMotionBlur);
-            SetVolumeProfile(typeof(LensDistortion), videoSettings.PostProcessLensDistortion);
+            ActiveProfileVolume<Bloom>(videoSettings.PostProcessBloom);
+            ActiveProfileVolume<DepthOfField>(videoSettings.PostProcessDepthOfField);
+            ActiveProfileVolume<Vignette>(videoSettings.PostProcessVignette);
+            ActiveProfileVolume<FilmGrain>(videoSettings.PostProcessFilmGrain);
+            ActiveProfileVolume<MotionBlur>(videoSettings.PostProcessMotionBlur);
+            ActiveProfileVolume<LensDistortion>(videoSettings.PostProcessLensDistortion);
             var additionalCameraSettings = _cameraMain.GetComponent<UniversalAdditionalCameraData>();
             additionalCameraSettings.antialiasing = videoSettings.PostProcessAntiAliasing ? AntialiasingMode.FastApproximateAntialiasing : AntialiasingMode.None;
             //var t1 = GraphicsSettings.GetGraphicsSettings();
